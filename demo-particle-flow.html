@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>粒子文字 · 鼠标交互</title>
+<style>
+@font-face{font-family:ParticleSans;src:url('/particle-dm-sans.woff2') format('woff2');font-weight:900;font-display:swap}
+:root{color-scheme:dark;background:#080e0c;color:#c3bfa2;font-family:ParticleSans,sans-serif}*{box-sizing:border-box}body{margin:0;overflow:hidden}canvas{display:block;width:100vw;height:100dvh;touch-action:none}
+.fallback{position:fixed;inset:0;display:grid;place-content:center;text-align:center;font:900 clamp(64px,18vw,180px)/1 ParticleSans,sans-serif;pointer-events:none}.ready .fallback{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#panel{position:fixed;right:20px;top:20px;padding:18px;background:#151c18;border:1px solid #485044;width:230px;font:13px/1.6 system-ui,sans-serif}#panel[hidden]{display:none}label{display:block;margin-bottom:12px}input{width:100%;accent-color:#c3bfa2}button{background:#293329;color:#eee9d6;border:1px solid #6c7665;padding:8px 12px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #ece1a8;outline-offset:4px}
+</style></head><body>
+<div class="fallback" role="heading" aria-level="1">talk<br>with<br>edison.</div>
+<canvas id="stage" aria-label="移动鼠标或用手指划过文字，粒子会散开并逐渐回位"></canvas>
+<aside id="panel" hidden aria-label="粒子调节"><label>影响范围<input id="radius" type="range" min="100" max="360" value="260"></label><label>回位速度<input id="spring" type="range" min="1" max="8" step="0.1" value="3.2"></label><button id="reset" type="button">恢复文字</button><output id="stats"></output></aside>
+<script type="module" src="/src/particle-flow.js"></script></body></html>
+
+
