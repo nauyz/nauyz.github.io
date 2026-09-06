@@ -10,6 +10,7 @@ let last = 0, elapsed = 0, raf = 0, averageDrift = 0, frameMs = 16;
 let wake, traits, energy;
 const pointer = { x: 0, y: 0, tx: 0, ty: 0, vx: 0, vy: 0, active: false, lastMove: -100 };
 let draw;
+const densityLayers = 4;
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
 function createRenderer() {
@@ -24,13 +25,20 @@ function createRenderer() {
   gl.attachShader(program, compile(gl.VERTEX_SHADER, `
     attribute vec2 aPosition;
     attribute vec2 aGrain;
+    attribute vec2 aHome;
     uniform vec2 uResolution;
     uniform float uDpr;
+    uniform float uLayer;
     varying float vAlpha;
     void main(){
-      gl_Position=vec4(aPosition/uResolution*vec2(2.,-2.)+vec2(-1.,1.),0.,1.);
-      gl_PointSize=aGrain.x*uDpr;
-      vAlpha=aGrain.y;
+      float spread=smoothstep(3.,100.,length(aPosition-aHome));
+      float seed=dot(aHome,vec2(12.9898,78.233))+uLayer*37.719;
+      vec2 jitter=fract(sin(vec2(seed,seed+19.19))*43758.5453)-.5;
+      vec2 offset=jitter*mix(1.7,11.,spread)*min(uLayer,1.);
+      gl_Position=vec4((aPosition+offset)/uResolution*vec2(2.,-2.)+vec2(-1.,1.),0.,1.);
+      gl_PointSize=aGrain.x*uDpr*.9;
+      // Dense dust stays readable in motion without overexposing resting text.
+      vAlpha=aGrain.y*mix(.52,.95,spread);
     }`));
   gl.attachShader(program, compile(gl.FRAGMENT_SHADER, `
     precision mediump float;
@@ -43,9 +51,11 @@ function createRenderer() {
   gl.linkProgram(program);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw Error(gl.getProgramInfoLog(program));
   gl.useProgram(program);
-  const buffer = gl.createBuffer(), appearance = gl.createBuffer();
+  const buffer = gl.createBuffer(), appearance = gl.createBuffer(), origins = gl.createBuffer();
   const aPosition = gl.getAttribLocation(program, 'aPosition');
   const aGrain = gl.getAttribLocation(program, 'aGrain');
+  const aHome = gl.getAttribLocation(program, 'aHome');
+  const layer = gl.getUniformLocation(program, 'uLayer');
   const resolution = gl.getUniformLocation(program, 'uResolution');
   const ratio = gl.getUniformLocation(program, 'uDpr');
   gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -61,7 +71,13 @@ function createRenderer() {
     gl.bindBuffer(gl.ARRAY_BUFFER, appearance);
     if (rebuild) gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(aGrain); gl.vertexAttribPointer(aGrain, 2, gl.FLOAT, false, 0, 0);
-    gl.drawArrays(gl.POINTS, 0, count);
+    gl.bindBuffer(gl.ARRAY_BUFFER, origins);
+    if(rebuild)gl.bufferData(gl.ARRAY_BUFFER,home,gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(aHome);gl.vertexAttribPointer(aHome,2,gl.FLOAT,false,0,0);
+    // Four unique grains per simulated carrier, expanded on the GPU.
+    for(let i=0;i<densityLayers;i++){
+      gl.uniform1f(layer,i);gl.drawArrays(gl.POINTS,0,count);
+    }
   };
   return true;
 }
@@ -89,10 +105,10 @@ function resize() {
   traits=new Float32Array(count*4);energy=new Float32Array(count);
   for(let i=0;i<count;i++) {
     grain[i]=random();colors[i*2]=.8+random()*.55;colors[i*2+1]=.18+random()*.36;
-    const dust=random()<.24;
-    traits[i*4]=dust?.45+random()*1.1:.94+random()*.12;
-    traits[i*4+1]=dust?.7+random()*.6:.96+random()*.08;
-    traits[i*4+2]=dust?.72+random()*.56:.96+random()*.08;
+    const dust=random()<.4;
+    traits[i*4]=dust?.4+random()*1.45:.7+random()*.6;
+    traits[i*4+1]=dust?.65+random()*.7:.85+random()*.3;
+    traits[i*4+2]=dust?.7+random()*.6:.8+random()*.4;
     traits[i*4+3]=random()*Math.PI*2;
   }
   wake=new ParticleWake(width,height);
@@ -105,9 +121,9 @@ function simulate(dt) {
   elapsed+=dt;
   const scale=Math.min(width/922,height/692,1.4);
   if(pointer.active) {
-    const blend=1-Math.exp(-38*dt), px=pointer.x, py=pointer.y;
+    const blend=1-Math.exp(-60*dt), px=pointer.x, py=pointer.y;
     pointer.x+=(pointer.tx-pointer.x)*blend; pointer.y+=(pointer.ty-pointer.y)*blend;
-    pointer.vx=clamp((pointer.x-px)/dt,-1800,1800); pointer.vy=clamp((pointer.y-py)/dt,-1800,1800);
+    pointer.vx=clamp((pointer.x-px)/dt,-2600,2600); pointer.vy=clamp((pointer.y-py)/dt,-2600,2600);
   } else {pointer.vx=pointer.vy=0;}
   const radius=settings.radius*scale;
   const speed=Math.hypot(pointer.vx,pointer.vy);
@@ -121,7 +137,8 @@ function simulate(dt) {
     drift+=dist;
     const k=i*4,response=traits[k],reach=traits[k+1],recovery=traits[k+2],phase=traits[k+3];
     energy[i]*=Math.exp(-dt*(.65+recovery*.3));
-    const spring=settings.spring*recovery*(1-.22*Math.min(energy[i],1));
+    const agitation=Math.min(energy[i],1);
+    const spring=settings.spring*recovery*(1-.36*agitation);
     let ax=hx*spring, ay=hy*spring;
     // Evaluate the stroke in material coordinates, not just the displaced cloud.
     // Otherwise grains meet an equilibrium ring and the pointer becomes a solid ball.
@@ -131,8 +148,8 @@ function simulate(dt) {
       // Smooth Gaussian tails and varied reach avoid a common stopping radius.
       const force=Math.exp(-d2/(r*r*.42))*activity*response;
       const push=(600+Math.min(speed,1200)*.5)*scale;
-      ax+=(dx/d*push-dy/d*550*scale+pointer.vx*.8)*force;
-      ay+=(dy/d*push+dx/d*550*scale+pointer.vy*.8)*force;
+      ax+=(dx/d*push-dy/d*550*scale+pointer.vx*1.5)*force;
+      ay+=(dy/d*push+dx/d*550*scale+pointer.vy*1.5)*force;
       energy[i]=Math.min(1.5,energy[i]+force*dt*6);
     }
     const fu=wake.sample(wake.u,x,y),fv=wake.sample(wake.v,x,y);
@@ -141,10 +158,11 @@ function simulate(dt) {
     if(dist>1) {
       const gate=Math.min(dist/(60*scale),1)*Math.min(energy[i],1),frequency=.018/scale;
       const sx=x*frequency+elapsed*.6,sy=y*frequency-elapsed*.4;
-      ax+=(Math.sin(sx)*Math.cos(sy)*150+Math.sin(sy*2.1+phase)*15)*scale*gate;
-      ay+=(-Math.cos(sx)*Math.sin(sy)*150+Math.cos(sx*1.7+phase)*15)*scale*gate;
+      ax+=(Math.sin(sx)*Math.cos(sy)*190+Math.sin(sy*2.1+phase+elapsed*1.4)*95)*scale*gate;
+      ay+=(-Math.cos(sx)*Math.sin(sy)*190+Math.cos(sx*1.7+phase-elapsed*1.2)*95)*scale*gate;
     }
-    const damping=Math.exp(-(1.2+recovery*.65)*dt);
+    // Free-flight while disturbed; restore damping as energy decays for clean settling.
+    const damping=Math.exp(-((1.2+recovery*.65)*(1-.48*agitation))*dt);
     velocity[j]=(velocity[j]+ax*dt)*damping;velocity[j+1]=(velocity[j+1]+ay*dt)*damping;
     position[j]+=velocity[j]*dt;position[j+1]+=velocity[j+1]*dt;
     if(dist<.18 && Math.abs(velocity[j])+Math.abs(velocity[j+1])<.5) {
@@ -164,7 +182,7 @@ function frame(now) {
     for(let i=0;i<steps;i++) simulate(delta/steps);
     draw();
   }
-  if(!panel.hidden) document.querySelector('#stats').textContent=` ${count.toLocaleString()} 粒子 · ${Math.round(1000/frameMs)} FPS`;
+  if(!panel.hidden) document.querySelector('#stats').textContent=` ${(count*densityLayers).toLocaleString()} 可见粒子 · ${Math.round(1000/frameMs)} FPS`;
   if(!document.hidden&&!reduced.matches) raf=requestAnimationFrame(frame);
 }
 function start(){if(!raf&&!document.hidden&&!reduced.matches){last=0;raf=requestAnimationFrame(frame);}}
@@ -192,7 +210,7 @@ if(createRenderer()) {
   for(const key of ['radius','spring']) document.getElementById(key).addEventListener('input',e=>settings[key]=Number(e.target.value));
   addEventListener('keydown',e=>{if(e.key.toLowerCase()==='h')panel.hidden=!panel.hidden; if(e.key==='Escape'){panel.hidden=true;reset();}});
   // Read-only diagnostics, without production overlays or artificial animation controls.
-  window.particleDiagnostics=()=>({count,averageDrift,frameMs,reducedMotion:reduced.matches,finite:position.every(Number.isFinite),width,height});
+  window.particleDiagnostics=()=>({count,visibleCount:count*densityLayers,averageDrift,frameMs,reducedMotion:reduced.matches,finite:position.every(Number.isFinite),width,height});
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);document.documentElement.classList.remove('ready');});
   canvas.addEventListener('webglcontextrestored',()=>location.reload());
 }

@@ -15,7 +15,7 @@ export class ParticleWake {
     return (array[i]*(1-fx)+array[i+1]*fx)*(1-fy)+(array[i+this.cols]*(1-fx)+array[i+this.cols+1]*fx)*fy;
   }
   step(dt,mouse,radius) {
-    const fade=Math.exp(-1.05*dt),speed=Math.hypot(mouse.vx,mouse.vy);
+    const fade=Math.exp(-1.5*dt),speed=Math.hypot(mouse.vx,mouse.vy);
     const ux=speed>1?mouse.vx/speed:1,uy=speed>1?mouse.vy/speed:0;
     for(let y=0;y<this.rows;y++)for(let x=0;x<this.cols;x++){
       const i=y*this.cols+x,px=x*this.dx,py=y*this.dy;
@@ -26,9 +26,9 @@ export class ParticleWake {
         const dx=px-mouse.x,dy=py-mouse.y;
         const along=dx*ux+dy*uy,across=-dx*uy+dy*ux;
         const weight=Math.exp(-(along*along*.55+across*across)/(radius*radius*.32));
-        const injection=(1-Math.exp(-7*dt))*weight;
-        u+=(mouse.vx*.75-u)*injection;
-        v+=(mouse.vy*.75-v)*injection;
+        const injection=(1-Math.exp(-14*dt))*weight;
+        u+=(mouse.vx*.9-u)*injection;
+        v+=(mouse.vy*.9-v)*injection;
         // Opposite rotations on the two sides of a stroke produce folding wakes.
         const curl=Math.sin(across/radius*3)*Math.min(speed,900)*weight*dt*2;
         u+=-uy*curl;v+=ux*curl;
