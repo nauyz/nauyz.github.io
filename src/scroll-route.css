@@ -1,0 +1,14 @@
+main#top{position:relative;isolation:isolate}
+.scroll-route{position:absolute;left:12px;top:0;height:100%;width:42px;z-index:3;pointer-events:none;overflow:visible;--route-color:#8e8af2;--route-track:#66798555;--route-paper:var(--bg)}
+.scroll-route-track,.scroll-route-fill{fill:none;stroke-width:1;vector-effect:non-scaling-stroke}
+.scroll-route-track{stroke:var(--route-track)}
+.scroll-route-fill{stroke:var(--route-color)}
+.scroll-route-plane,.scroll-route-marker{fill:var(--route-color)}
+.scroll-route-marker{filter:drop-shadow(0 0 3px #8e8af280)}
+.scroll-route-node>circle:first-child{fill:var(--route-paper);stroke:var(--route-track);stroke-width:1}
+.scroll-route-dot{fill:var(--route-track)}
+.scroll-route-node[data-lit=true]>circle:first-child{stroke:var(--route-color)}
+.scroll-route-node[data-lit=true] .scroll-route-dot{fill:var(--route-color)}
+:root[data-theme=light] .scroll-route{--route-color:#605bd5;--route-track:#77738344}
+@media(max-width:1024px){.scroll-route{left:1px;width:28px}}
+@media(max-width:768px){.scroll-route{left:0;width:16px;opacity:.85}}
