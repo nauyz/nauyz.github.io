@@ -35,6 +35,6 @@ export const otherProjects = [
     description: '把 AI 内容、开源项目、新产品与社区讨论放进一个入口。按兴趣筛选，回到原文核验，让每天的信息浏览更有方向。',
     tags: ['Web 应用', '信息筛选'],
     url: 'https://nauyz.github.io/personal-signal-desk/',
-    media: { type: 'video', inline: true, src: '/media/personal-signal/demo.mp4', poster: '/media/personal-signal/poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
+    media: { type: 'video', inline: true, src: '/media/personal-signal/user-demo.mp4', poster: '/media/personal-signal/user-poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
   },
 ];

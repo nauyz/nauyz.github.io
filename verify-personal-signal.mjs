@@ -77,7 +77,7 @@ try {
     await expect(card.locator('.inline-video-unavailable')).toBeVisible();
     await expect(card.locator('.inline-video-poster')).toBeVisible();
     await expect(card.getByRole('link', { name: '打开个人信源' })).toBeVisible();
-  }, page => page.route('**/media/personal-signal/demo.mp4', route => route.abort()));
+  }, page => page.route('**/media/personal-signal/user-demo.mp4', route => route.abort()));
 } finally {
   await fs.writeFile(out + 'playback-tests.json', JSON.stringify(results, null, 2));
   await browser.close();
