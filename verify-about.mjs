@@ -53,6 +53,15 @@ try {
     await expect(page.locator('.trace-details')).toBeHidden();
     await expect(toggle).toBeFocused();
   }
+  for (const [company, evidence] of [['思必驰', '95%'], ['爱莫科技', 'LangChain']]) {
+    await page.getByRole('button', { name: new RegExp(company) }).click();
+    await expect(page.getByRole('button', { name: '展开完整经历' })).toHaveAttribute('aria-expanded', 'false');
+    await page.getByRole('button', { name: '展开完整经历' }).click();
+    await expect(page.locator('.trace-details')).toContainText(evidence);
+    await page.locator('#agent-trace').screenshot({ path: `qa/about/${company}-detail.png` });
+  }
+  await page.getByRole('button', { name: /小米 2025/ }).click();
+  await expect(page.locator('.trace-details')).toBeHidden();
   await expect(page.locator('a[href="tel:15568773476"]')).toHaveCount(1);
   await expect(page.locator('a[href="mailto:yuan_zhang11@163.com"]')).toHaveCount(1);
   const downloadEvent = page.waitForEvent('download');
@@ -65,7 +74,7 @@ try {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(url);
   await page.getByRole('link', { name: '关于我', exact: true }).click();
-  await expect(page.getByText('AI Native 实践', { exact: true })).toBeVisible();
+  await expect(page.locator('.trace-lines').getByText('AI Native 实践', { exact: true })).toBeVisible();
   await page.locator('#video').evaluate(el => window.scrollTo({ top: el.offsetTop, behavior: 'instant' }));
   await expect(page.getByRole('button', { name: '下一个案例' })).toBeEnabled();
   await page.getByRole('button', { name: '下一个案例' }).click();

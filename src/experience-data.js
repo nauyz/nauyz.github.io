@@ -43,3 +43,24 @@ export const xiaomiDetails = {
     ] },
   ],
 };
+
+export const workHistory = [
+  { id: 'xiaomi', company: '小米', dates: '2025.07 — 至今', role: '用户产品经理', title: 'XIAOMI · PRODUCT', department: '电视与视频事业部 · 核心产品组', work: xiaomiWork, details: xiaomiDetails },
+  { id: 'aispeech', company: '思必驰', dates: '2024.08 — 2025.01', role: '语音产品实习生', title: 'AISPEECH · VOICE', department: '智能车载事业部',
+    work: [
+      { title: '车载知识库', lines: ['设计汽车说明书拆解规范，构建 2,000 条基础问答知识库，必过集召回率达到 95%。'] },
+      { title: '语音体验优化', lines: ['分析 3 万余条 badcase，追踪 ASR、NLU、DM 链路，回复抽样正确率提升至 85%。'] },
+    ], details: { introduction: '思必驰科技股份有限公司 · 智能车载事业部 · 语音产品实习生', sections: [
+      { title: '车载语音产品', groups: [{ title: '', items: [
+        ['大模型知识库构建', '奔腾项目中，针对车载语音“用车助手”功能点，设计汽车说明书标准拆解规范，依托公司自研平台，构建 2,000 条基础问答大模型知识库，必过集召回率达到 95%。'],
+        ['语音 badcase 处理', '五菱项目中，针对项目回流数据 3 万余条 badcase，全链路追踪 ASR、NLU、DM 流程，定位 bug。基于 DUI 开发平台，配置对话逻辑，成功解决误召回、落域、拒识问题，语音助手回复抽样正确率提升至 85%。'],
+      ] }] },
+    ] } },
+  { id: 'aimo', company: '爱莫科技', dates: '2024.06 — 2024.08', role: '产品经理实习生', title: 'AIMO · PRODUCT', department: '产品部',
+    work: [{ title: '行业智能客服', lines: ['面向烟草零售场景，设计智能客服产品，整合行业知识与客户服务经验，构建大模型知识库。'] }],
+    details: { introduction: '爱莫科技有限公司 · 产品部 · 产品经理实习生。为提升烟草零售企业运营效率、降低成本，通过引入智能客服，大幅度提升烟草零售企业线上和线下工作效率。', sections: [
+      { title: '行业智能客服', groups: [{ title: '', items: [
+        ['智能客服设计', '针对烟草零售场景，基于 Bert、Qwen2 大模型与 LangChain 架构，整合行业知识和客户服务经验，设计智能客服产品，并构建大模型知识库，支持客户与机器人进行智能对话。'],
+      ] }] },
+    ] } },
+];
