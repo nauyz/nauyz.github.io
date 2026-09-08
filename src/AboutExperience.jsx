@@ -1,7 +1,7 @@
 import { EnvelopeSimple, Phone, ArrowUpRight } from '@phosphor-icons/react';
 import RequestFlow from './RequestFlow';
 import AgentTrace from './AgentTrace';
-import { profile, experience, xiaomiWork } from './experience-data';
+import { profile, experience, xiaomiWork, xiaomiDetails } from './experience-data';
 import './about-experience.css';
 
 const journey = {
@@ -19,7 +19,17 @@ const workTrace = {
 export default function AboutExperience() {
   return <div className="about-experience">
     <RequestFlow data={journey} experience>
-      <AgentTrace data={workTrace} experience/>
+      <AgentTrace data={workTrace} experience details={<>
+        <p>{xiaomiDetails.introduction}</p>
+        {xiaomiDetails.sections.map(section => <section key={section.title}>
+          <h3>{section.title}</h3>
+          {section.introduction && <p>{section.introduction}</p>}
+          {section.groups.map(group => <div key={group.title}>
+            {group.title && <h4>{group.title}</h4>}
+            <dl>{group.items.map(([label, body]) => <div key={label}><dt>{label}</dt><dd>{body}</dd></div>)}</dl>
+          </div>)}
+        </section>)}
+      </>}/>
       <address className="about-contact" id="contact">
         <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
         <a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} aria-hidden="true"/>{profile.email}</a>

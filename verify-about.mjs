@@ -33,6 +33,26 @@ try {
     }
     checks.push({ width, overflow });
   }
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto(url);
+    const toggle = page.getByRole('button', { name: '展开完整经历' });
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('.trace-details')).toBeHidden();
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('button', { name: '收起完整经历' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.trace-details')).toBeVisible();
+    await expect(page.locator('.trace-details dt')).toHaveCount(8);
+    await expect(page.locator('.trace-details')).toContainText('UV CTR 84%');
+    await expect(page.locator('.trace-details')).toContainText('18.47%');
+    await expect(page.locator('.trace-details')).toContainText('全员左移');
+    if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)) throw Error(`Expanded overflow at ${width}`);
+    await page.locator('.trace-details').screenshot({ path: `qa/about/${width}-expanded.png` });
+    await page.getByRole('button', { name: '收起完整经历' }).click();
+    await expect(page.locator('.trace-details')).toBeHidden();
+    await expect(toggle).toBeFocused();
+  }
   await expect(page.locator('a[href="tel:15568773476"]')).toHaveCount(1);
   await expect(page.locator('a[href="mailto:yuan_zhang11@163.com"]')).toHaveCount(1);
   const downloadEvent = page.waitForEvent('download');

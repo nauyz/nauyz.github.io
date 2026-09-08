@@ -1,4 +1,15 @@
 /* Reuse RequestFlow's chips/wire/panel and AgentTrace's original terminal. */
+.about-experience .trace-eyebrow{flex-wrap:wrap}
+.about-experience .trace-eyebrow>span{margin-left:auto}
+.trace-expand{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:12px var(--sans);letter-spacing:0;color:var(--accent);min-height:40px}
+.trace-expand:hover{border-color:var(--accent)}
+.trace-details{padding:28px 38px;border-top:1px solid var(--line);font:15px/1.95 var(--sans);color:var(--text);overflow-wrap:anywhere}
+.trace-details[hidden]{display:none}
+.trace-details p{margin:0 0 20px;color:var(--muted)}
+.trace-details h3{font-size:20px;color:var(--accent);margin:32px 0 18px;font-weight:500}
+.trace-details h4{font-size:16px;margin:24px 0 16px;font-weight:500}
+.trace-details dl{margin:0}.trace-details dl>div{margin:0 0 20px}.trace-details dt{color:var(--accent);font-weight:500}.trace-details dd{margin:4px 0 0}
+@media(max-width:768px){.trace-details{padding:22px 18px;font-size:14px}.trace-details h3{font-size:18px}.trace-expand{font-size:11px;padding:8px}.about-experience .trace-eyebrow{gap:10px}}
 .about-experience .request-chip{font-size:12px;letter-spacing:0;padding:0 2px;line-height:1.6;text-align:center}
 .about-experience .request-node-name{font-size:13px}
 .about-experience .request-node-detail{font-size:12px;padding-inline:4px}
