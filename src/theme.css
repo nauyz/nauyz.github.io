@@ -1,0 +1,39 @@
+/* One neutral palette for the page, flow, terminal and project shells. */
+:root{
+  --site-bg:#000000;--site-surface:#0a0a0a;--site-raised:#111111;
+  --site-text:#f5f5f5;--site-muted:#a3a3a3;--site-border:#262626;
+  --site-accent:#8ab4f8;--site-metal:#242424;
+  --bg:var(--site-bg);--surface:var(--site-surface);--card:var(--site-surface);
+  --screen:var(--site-bg);--text:var(--site-text);--muted:var(--site-muted);
+  --line:var(--site-border);--accent:var(--site-accent);--monitor:var(--site-metal);
+}
+:root[data-theme=light]{
+  --site-bg:#ffffff;--site-surface:#fafafa;--site-raised:#f0f0f0;
+  --site-text:#171717;--site-muted:#626262;--site-border:#dedede;
+  --site-accent:#245cb4;--site-metal:#bdbdbd;
+  --bg:var(--site-bg);--surface:var(--site-surface);--card:var(--site-surface);
+  --screen:var(--site-bg);--text:var(--site-text);--muted:var(--site-muted);
+  --line:var(--site-border);--accent:var(--site-accent);--monitor:var(--site-metal);
+}
+:root .request-flow{
+  --rf-bg:var(--site-bg);--rf-surface:var(--site-surface);--rf-well:var(--site-bg);
+  --rf-text:var(--site-text);--rf-muted:var(--site-muted);--rf-border:var(--site-border);--rf-purple:var(--site-accent);
+}
+:root .request-panel{background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(138,180,248,.08),transparent 70%),linear-gradient(var(--rf-surface),var(--rf-bg))}
+:root .request-flow h2 em{color:var(--site-text)}
+:root .request-wire{background:var(--site-border)}
+:root .request-wire-fill{background:linear-gradient(90deg,#bdd5fb,#8ab4f8 30%,#6496e6 65%,#bdd5fb);box-shadow:0 0 9px #8ab4f866}
+:root .request-packet{background:var(--site-accent);box-shadow:0 0 10px 3px #f5f5f580}
+:root .request-nodes [data-state=lit] .request-chip,:root .request-nodes li:hover .request-chip{
+  box-shadow:0 0 0 1px var(--rf-text),0 0 20px 4px #f5f5f530,0 0 38px 8px #f5f5f51a;
+}
+:root .request-nodes [data-state=lit] .request-chip::after,:root .request-nodes li:hover .request-chip::after{border-color:#f5f5f57a}
+:root .scroll-route{--route-color:var(--site-accent);--route-track:var(--site-border);--route-paper:var(--site-bg)}
+:root .scroll-route-marker{filter:drop-shadow(0 0 3px #8ab4f880)}
+:root .flip-face{background:rgba(10,10,10,.4);border-color:rgba(38,38,38,.7);box-shadow:0 1px 0 rgba(138,180,248,.18),0 0 0 1px rgba(138,180,248,.08),0 30px 70px -18px rgba(138,180,248,.28),0 50px 100px -30px rgba(0,0,0,.8)}
+:root .flip-face::before{background:linear-gradient(135deg,rgba(138,180,248,.1),transparent 45%),linear-gradient(315deg,rgba(138,180,248,.06),transparent 55%)}
+:root .flip-face:hover,:root .flip-face:focus-within{border-color:rgba(138,180,248,.35)}
+:root[data-theme=light] .flip-face{background:color-mix(in srgb,var(--surface) 40%,transparent);border-color:var(--line)}
+:root .trace-dots i,:root .trace-dots i:first-child{background:var(--site-muted)}
+:root .naval{background:radial-gradient(ellipse at 50% 110%,#8ab4f820,transparent 75%),var(--screen)}
+:root .naval-device{background:linear-gradient(130deg,#454545,#151515 35%,#343434);border-color:#686868;box-shadow:0 15px 27px #0006}
