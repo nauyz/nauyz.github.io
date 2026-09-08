@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Play, Pause } from '@phosphor-icons/react';
 import './inline-project-video.css';
 
@@ -8,6 +9,7 @@ export default function InlineProjectVideo({ media, name }) {
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [controlsHost, setControlsHost] = useState(null);
 
   function reconcile() {
     const video = videoRef.current;
@@ -26,6 +28,7 @@ export default function InlineProjectVideo({ media, name }) {
 
   useEffect(() => {
     const video = videoRef.current;
+    setControlsHost(video.closest('.project-cover-static'));
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     gate.current.reduced = motion.matches;
     const observer = new IntersectionObserver(([entry]) => {
@@ -54,10 +57,10 @@ export default function InlineProjectVideo({ media, name }) {
       aria-label={media.alt || `${name}操作演示`} onPlaying={() => { setPlaying(true); setStarted(true); }}
       onPause={() => setPlaying(false)} onError={() => { gate.current.failed = true; setFailed(true); setPlaying(false); }} />
     {(!started || failed) && <img className="inline-video-poster" src={media.poster} alt={media.posterAlt || `${name}界面预览`} />}
-    {!failed && <button type="button" className="inline-video-toggle" onClick={toggle} aria-label={playing ? '暂停演示' : '播放演示'}>
+    {controlsHost && createPortal(<div className="project-playback">{!failed && <button type="button" className="inline-video-toggle project-playback-button" onClick={toggle} aria-label={playing ? '暂停演示' : '播放演示'}>
       {playing ? <Pause size={14} weight="fill" aria-hidden="true" /> : <Play size={14} weight="fill" aria-hidden="true" />}
       <span>{playing ? '暂停' : '播放演示'}</span>
     </button>}
-    {failed && <span className="inline-video-unavailable">演示暂不可用</span>}
+    {failed && <span className="inline-video-unavailable">演示暂不可用</span>}</div>, controlsHost)}
   </div>;
 }

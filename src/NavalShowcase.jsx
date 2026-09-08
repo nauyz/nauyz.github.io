@@ -93,6 +93,6 @@ export default function NavalShowcase({project}) {
         {(!started||failed)&&<img className="naval-detail-poster" src={project.media.showcasePoster} alt="纳瓦尔认知库录像首页"/>}
       </div></div>
     </div>
-    <div className="naval-playback">{failed?<span>演示暂不可用</span>:<button type="button" onClick={toggle} aria-label={frame.running?'暂停演示':'播放演示'}>{frame.running?<Pause size={13} weight="fill"/>:<Play size={13} weight="fill"/>}<span>{frame.running?'暂停':'播放演示'}</span></button>}</div>
+    <div className="naval-playback project-playback">{failed?<span>演示暂不可用</span>:<button className="project-playback-button" type="button" onClick={toggle} aria-label={frame.running?'暂停演示':'播放演示'}>{frame.running?<Pause size={14} weight="fill"/>:<Play size={14} weight="fill"/>}<span>{frame.running?'暂停':'播放演示'}</span></button>}</div>
   </div>;
 }

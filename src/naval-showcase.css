@@ -21,10 +21,7 @@
 
 @media(max-width:700px){.naval-tap-hand{width:24px;height:30px;left:calc(70% - 10px);top:calc(var(--hand-y,55%) - 6px)}.naval-transfer svg{width:32px;height:24px}.naval-transfer span{font-size:8px;padding:3px}.naval-transfer{top:calc(50% + 6px);height:24px}}
 @media(prefers-reduced-motion:reduce){.naval-transfer svg,.naval-transfer span{transition:none}}
-.naval-playback{position:absolute;right:20px;bottom:14px;font:500 11px/1.2 var(--sans);color:var(--muted)}
-.naval-playback button{display:flex;align-items:center;gap:5px;min-height:32px;padding:6px 9px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--muted)}
-.naval-playback button:hover{color:var(--text);border-color:var(--muted)}
 @media(max-width:700px){.naval-stage{aspect-ratio:auto;height:clamp(230px,65vw,280px);--phone-height:calc(100% + 22px)}.naval-home{transform:translateX(calc(-50% - var(--opening) * (50% + 21px)))}.naval-detail{transform:translate(21px,var(--reveal-y))}.naval-device{padding:4px;border-radius:17px}.naval-screen{border-radius:12px}}
-@media(pointer:coarse){.naval-playback button{min-height:44px;min-width:44px}}
+
 
 .naval-tap-ring{border-color:#07d28f}
