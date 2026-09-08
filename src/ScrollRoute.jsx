@@ -42,7 +42,7 @@ export default function ScrollRoute() {
       fill.setAttribute('d', path);
       length = track.getTotalLength();
       fill.style.strokeDasharray = String(length);
-      stops = ['#video', '#projects', '#about', '#agent-trace'].map(selector => {
+      stops = ['#about', '#agent-trace', '#video', '#projects'].map(selector => {
         const section = main.querySelector(selector);
         return section ? Math.max(145, section.getBoundingClientRect().top - main.getBoundingClientRect().top + 44) : 145;
       });
