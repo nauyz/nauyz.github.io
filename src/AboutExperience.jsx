@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { EnvelopeSimple, Phone, ArrowUpRight } from '@phosphor-icons/react';
+import { useId, useState } from 'react';
+import { EnvelopeSimple, Phone, ArrowUpRight, CaretDown } from '@phosphor-icons/react';
 import RequestFlow from './RequestFlow';
 import AgentTrace from './AgentTrace';
 import { profile, experience, workHistory } from './experience-data';
@@ -33,13 +33,22 @@ function WorkDetails({ job }) {
 }
 export default function AboutExperience() {
   const [selected, setSelected] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+  const panelId = useId();
   const job = workHistory[selected];
   return <div className="about-experience">
     <RequestFlow data={journey} experience>
+      <section id="work-history" className="work-history" aria-labelledby="work-history-heading">
+      <div className="work-history-heading"><h2 id="work-history-heading">工作经历</h2>
+        <button className="trace-expand" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(value => !value)}>{expanded ? '收起完整经历' : '展示完整经历'}<CaretDown size={14} aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined }}/></button>
+      </div>
+      <div id={panelId} hidden={!expanded}>
       <div className="work-company-selector" role="group" aria-label="选择公司经历">
         {workHistory.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === index} onClick={() => setSelected(index)}><span>{item.company}</span><small>{item.dates}</small></button>)}
       </div>
-      <AgentTrace key={job.id} data={traces[selected]} experience details={<WorkDetails job={job}/>}/>
+      <AgentTrace key={job.id} data={traces[selected]} experience detailsOnly details={<WorkDetails job={job}/>}/>
+      </div>
+      </section>
       <address className="about-contact" id="contact">
         <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
         <a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} aria-hidden="true"/>{profile.email}</a>

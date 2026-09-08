@@ -1,4 +1,10 @@
 /* Reuse RequestFlow's chips/wire/panel and AgentTrace's original terminal. */
+.work-history{margin-top:40px;scroll-margin-top:90px}
+.work-history-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.about-experience .work-history-heading h2{font:500 20px/1.5 var(--sans);letter-spacing:0;margin:0;color:var(--rf-text)}
+.about-experience .work-history-heading .trace-expand{color:var(--rf-purple);border-color:var(--rf-border);background:var(--rf-surface)}
+.work-history .work-company-selector{margin-top:22px}
+.work-history [hidden]{display:none!important}
 .about-experience .trace-eyebrow{flex-wrap:wrap}
 .about-experience .trace-eyebrow>span{margin-left:auto}
 .trace-expand{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:12px var(--sans);letter-spacing:0;color:var(--accent);min-height:40px}
