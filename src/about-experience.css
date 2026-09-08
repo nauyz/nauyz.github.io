@@ -1,46 +1,13 @@
-.about-experience{width:var(--page);margin:0 auto;padding:96px 0 36px;scroll-margin-top:80px}
-.about-heading{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:60px}
-.about-heading h2{font:400 clamp(36px,4vw,56px)/1.2 var(--display);margin:0 0 18px;color:var(--text)}
-.about-heading p{font-size:16px;line-height:1.8;color:var(--muted);margin:0}
-.about-name{font:400 24px var(--display);color:var(--accent);white-space:nowrap}
-.about-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;padding:0;margin:0 0 44px}
-.about-timeline li{position:relative;text-align:center;min-width:0}
-.about-timeline h3{font-size:18px;line-height:1.5;font-weight:500;margin:0 8px 22px}
-.about-timeline li:before{content:'';position:absolute;top:58px;left:0;right:0;height:1px;background:var(--muted)}
-.about-timeline li:first-child:before{left:50%}
-.about-timeline li:last-child:before{right:50%}
-.about-node{position:relative;display:block;width:18px;height:18px;border:1px solid var(--muted);border-radius:50%;margin:0 auto 20px;background:var(--bg)}
-.about-dates{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted);margin:0 4px 10px;line-height:1.5}
-.about-role{font-size:13px;line-height:1.7;color:var(--muted);margin:0 8px}
-.about-timeline .is-current h3{color:var(--accent)}
-.about-timeline .is-current .about-node{border-color:var(--accent);outline:1px solid var(--accent);outline-offset:4px;background:var(--accent);box-shadow:inset 0 0 0 3px var(--bg)}
-.about-timeline .is-current:after{content:'';position:absolute;top:67px;bottom:-44px;left:50%;width:1px;background:var(--accent);z-index:-1}
-.about-timeline .is-current{isolation:isolate}
-.about-timeline .is-current p{position:relative;background:var(--bg)}
-.about-terminal{border:1px solid var(--accent);border-radius:12px;overflow:hidden;background:var(--bg)}
-.about-terminal-bar{display:flex;align-items:center;gap:22px;padding:17px 24px;border-bottom:1px solid var(--line);background:var(--surface)}
-.about-terminal-dots{display:flex;gap:8px;flex-shrink:0}
-.about-terminal-dots i{width:10px;height:10px;border-radius:50%;background:#ee756a}
-.about-terminal-dots i:nth-child(2){background:#e9bd65}
-.about-terminal-dots i:nth-child(3){background:#86bb79}
-.about-terminal-bar h3{font-size:17px;font-weight:500;margin:0;line-height:1.6}
-.about-terminal-date{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
-.about-work{list-style:none;padding:0 32px;margin:0}
-.about-work li{display:grid;grid-template-columns:48px minmax(180px,.8fr) 2fr;gap:24px;align-items:start;padding:34px 8px;border-bottom:1px solid var(--line)}
-.about-work li:last-child{border-bottom:0}
-.about-work-number{font:400 26px/1.5 var(--display);color:var(--muted)}
-.about-work h4{font-size:21px;line-height:1.6;color:var(--accent);font-weight:500;margin:0}
-.about-work p{font-size:15px;line-height:1.95;margin:0;color:var(--text);text-wrap:pretty}
-.about-contact{display:flex;align-items:center;gap:32px;flex-wrap:wrap;font-style:normal;border-top:1px solid var(--line);margin-top:52px;padding-top:24px;scroll-margin-top:90px}
-.about-contact a{display:inline-flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);min-height:44px;overflow-wrap:anywhere}
-.about-contact a:hover{color:var(--accent)}
-.about-contact .about-download{margin-left:auto;border:1px solid var(--accent);border-radius:8px;padding:0 18px;color:var(--accent)}
-@media(max-width:1100px){.about-work li{grid-template-columns:32px 175px 1fr;gap:18px}.about-timeline h3{font-size:16px}.about-role{font-size:12px}.about-timeline li:before{top:55px}}
-@media(max-width:768px){
- .about-experience{padding-top:64px}.about-heading{margin-bottom:36px;align-items:flex-start}.about-heading h2{font-size:36px}.about-heading p{font-size:14px;max-width:22ch}.about-name{font-size:20px;padding-top:8px}
- .about-timeline{display:block;margin:0 0 28px;padding-left:8px}.about-timeline li{text-align:left;padding:0 0 28px 32px}.about-timeline li:before,.about-timeline li:first-child:before,.about-timeline li:last-child:before{left:0;right:auto;top:12px;bottom:0;width:1px;height:auto}.about-timeline li:last-child:before{background:var(--accent);bottom:-28px}
- .about-timeline h3{font-size:18px;margin:0 0 7px}.about-node{position:absolute;left:-8px;top:5px;margin:0}.about-dates{margin:0 0 4px;font-size:13px}.about-role{margin:0;font-size:13px}.about-timeline .is-current:after{display:none}.about-timeline li:last-child{padding-bottom:0}
- .about-terminal-bar{padding:14px 16px;gap:12px;flex-wrap:wrap}.about-terminal-bar h3{font-size:16px}.about-terminal-date{width:100%;margin-left:0;padding-left:58px;font-size:12px}.about-terminal-dots{gap:6px}.about-terminal-dots i{width:9px;height:9px}
- .about-work{padding:0 18px}.about-work li{grid-template-columns:26px 1fr;gap:8px 12px;padding:24px 0}.about-work-number{font-size:21px}.about-work h4{font-size:19px}.about-work li>div{grid-column:2}.about-work p{font-size:14px;line-height:1.9}
- .about-contact{gap:6px 20px;margin-top:32px;padding-top:18px;align-items:flex-start;flex-direction:column}.about-contact .about-download{margin:12px 0 0}
-}
+/* Reuse RequestFlow's chips/wire/panel and AgentTrace's original terminal. */
+.about-experience .request-chip{font-size:12px;letter-spacing:0;padding:0 2px;line-height:1.6;text-align:center}
+.about-experience .request-node-name{font-size:13px}
+.about-experience .request-node-detail{font-size:12px;padding-inline:4px}
+.about-experience .trace-section{width:100%;margin:48px 0 0;--bg:var(--rf-bg);--surface:var(--rf-surface);--text:var(--rf-text);--muted:var(--rf-muted);--line:var(--rf-border);--accent:var(--rf-purple)}
+.about-experience .trace-eyebrow h2{font-size:16px;line-height:1.6;letter-spacing:.1em}
+.about-experience .trace-lines{gap:22px}
+.about-experience .trace-code{line-height:1.8}
+.about-experience .about-contact{display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-style:normal;border-top:1px solid var(--rf-border);margin-top:32px;padding-top:24px;scroll-margin-top:90px}
+.about-contact a{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--rf-muted);min-height:44px;overflow-wrap:anywhere}
+.about-contact a:hover{color:var(--rf-text)}
+.about-contact .about-download{margin-left:auto;border:1px solid var(--rf-border);border-radius:8px;padding:0 16px;color:var(--rf-text)}
+@media(max-width:768px){.about-experience .trace-eyebrow h2{font-size:12px;letter-spacing:.05em}.about-experience .trace-section{margin-top:32px}.about-experience .about-contact{gap:6px 16px;align-items:flex-start;flex-direction:column}.about-contact .about-download{margin:12px 0 0}}

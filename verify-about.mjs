@@ -17,14 +17,18 @@ try {
     await page.evaluate(() => document.fonts.ready);
     await page.getByRole('link', { name: '关于我', exact: true }).click();
     await expect(page.locator('#about')).toBeInViewport();
-    await expect(page.locator('.about-timeline > li')).toHaveCount(5);
-    await expect(page.locator('.about-work > li')).toHaveCount(3);
-    await expect(page.locator('.about-timeline .is-current')).toContainText('2025.07 — 至今');
+    await expect(page.locator('.request-nodes > li')).toHaveCount(5);
+    await expect(page.locator('.request-nodes > li').last()).toHaveAttribute('data-state', 'lit');
+    await page.locator('#agent-trace').scrollIntoViewIfNeeded();
+    await expect(page.getByRole('button', { name: '重新播放' })).toBeEnabled();
+    await expect(page.locator('.trace-lines > li')).toHaveCount(3);
+    await expect(page.locator('.request-nodes > li').last()).toContainText('2025.07 — 至今');
     await page.locator('#about').evaluate(el => window.scrollTo({ top: el.offsetTop - 80, behavior: 'instant' }));
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     if (overflow) throw Error(`Horizontal overflow at ${width}`);
     for (const theme of ['dark', 'light']) {
       await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme);
+      await page.waitForTimeout(600);
       if (width === 1440 || width === 390) await page.locator('#about').screenshot({ path: `qa/about/${width}-${theme}.png` });
     }
     checks.push({ width, overflow });
@@ -36,10 +40,12 @@ try {
   const download = await downloadEvent;
   if (await download.failure()) throw Error('Resume download failed');
   if (download.suggestedFilename() !== '张裕安-简历.pdf') throw Error('Unexpected download filename');
+  await page.getByRole('button', { name: '重新播放' }).click();
+  await expect(page.getByRole('button', { name: '重新播放' })).toBeEnabled();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(url);
   await page.getByRole('link', { name: '关于我', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'AI Native 实践' })).toBeVisible();
+  await expect(page.getByText('AI Native 实践', { exact: true })).toBeVisible();
   await page.locator('#video').evaluate(el => window.scrollTo({ top: el.offsetTop, behavior: 'instant' }));
   await expect(page.getByRole('button', { name: '下一个案例' })).toBeEnabled();
   await page.getByRole('button', { name: '下一个案例' }).click();
