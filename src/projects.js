@@ -31,9 +31,10 @@ export const otherProjects = [
     detail: '这里预留 APP 的产品背景、功能亮点、使用演示和下载入口。当前为展示结构示例，正式内容稍后填充。', media: null,
   },
   {
-    id: 'news', name: '个人新闻网站', english: 'The Daily.', subtitle: 'A personal lens on the world.',
-    description: '在不断更新的信息中，找到值得关注的内容。这里将介绍个人新闻网站的信息组织方式与浏览体验。',
-    tags: ['Web 应用', '信息与发现'], coverLabel: '看见信息，也看见脉络。',
-    detail: '这里预留新闻网站的产品介绍、页面截图、信息来源说明和访问入口。当前为展示结构示例，正式内容稍后填充。', media: null,
+    id: 'news', name: '个人信源', subtitle: 'Your sources. Your perspective.',
+    description: '把 AI 内容、开源项目、新产品与社区讨论放进一个入口。按兴趣筛选，回到原文核验，让每天的信息浏览更有方向。',
+    tags: ['Web 应用', '信息筛选'],
+    url: 'https://nauyz.github.io/personal-signal-desk/',
+    media: { type: 'video', inline: true, src: '/media/personal-signal/demo.mp4', poster: '/media/personal-signal/poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
   },
 ];
