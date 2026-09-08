@@ -1,0 +1,33 @@
+@import url('./surface.css');
+/* One icon family, one shallow surface and one moving highlight. */
+.node .halo{display:none}
+.node .hit{fill:#122a30!important;stroke:#61787c45!important;stroke-width:1;filter:drop-shadow(0 3px 3px #0002)!important}
+.node.upcoming .hit{fill:#10272d!important;stroke:#61787c35!important}
+.node.processing .hit{fill:#193238!important;stroke:#b8a57999!important}
+.node.done .hit{fill:#243737!important;stroke:#cbb57d80!important}
+.node .glyph{color:#aab9bc;pointer-events:none}
+.node.processing .glyph{color:#eee9d9}
+.node.done .glyph{color:#e2c88d}
+.node .glyph svg{width:36px;height:36px;margin:0;min-width:0;overflow:visible}
+.node text{font-size:15px!important;letter-spacing:.4px}
+.node:focus-visible .hit{stroke:#edece3!important;stroke-width:2}
+.ingredient-glyph{color:#c8c6b5}
+.ingredient-glyph svg{width:22px;height:22px;min-width:0;margin:0;overflow:visible}
+.completion{filter:drop-shadow(0 2px 2px #0002)}
+#journey-controls button{background:#10272d;border-color:#294149;color:#d8b66d}
+header p,.info p{color:var(--muted)}
+/* Match the workspace footage itself: near-white surfaces, grey dividers, ink. */
+.map .node .hit{fill:#fff!important;stroke:#d9dad5!important;filter:drop-shadow(0 2px 2px #2628200b)!important}
+.map .node.upcoming .hit{fill:#f7f7f5!important;stroke:#deded9!important}
+.map .node.processing .hit{fill:#fff!important;stroke:#9b895b!important}
+.map .node.done .hit{fill:#f0f0eb!important;stroke:#aaa990!important}
+.map .node .glyph{color:#777b76}
+.map .node.processing .glyph{color:#252823}
+.map .node.done .glyph{color:#554d35}
+.map .node text,.map .node.upcoming text{fill:#777b75!important}
+.map .node.processing text,.map .node.done text{fill:#343b34!important}
+.map .branch,.map .end{fill:#777d73}
+.map .node .product-label{font-size:10.5px!important;letter-spacing:0;fill:#555d4e!important}
+.platform-delivery svg{margin:0;min-width:0;width:18px;height:16px;overflow:visible}
+.input-art svg{margin:0;min-width:0;width:36px;height:36px;overflow:visible}
+.delivery-logo{margin:0;min-width:0;width:22px;height:22px;overflow:visible}

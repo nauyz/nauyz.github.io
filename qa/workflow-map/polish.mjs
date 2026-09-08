@@ -1,0 +1,20 @@
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {FileText,Waveform,FilmStrip,UserCircle,Shapes,Stack,MusicNotes,Image,Package,Article,TerminalWindow,BookOpen,SlidersHorizontal,FileAudio} from '@phosphor-icons/react';
+import fs from 'node:fs';
+const dir=new URL('./',import.meta.url);
+const glyph=C=>renderToStaticMarkup(React.createElement(C,{weight:'duotone',size:36}));
+const icons=[FileText,Waveform,FilmStrip,UserCircle,Shapes,Stack,MusicNotes,Image,Package,Article].map(glyph);
+const tools=[TerminalWindow,BookOpen,SlidersHorizontal,FileAudio].map(glyph);
+fs.writeFileSync(new URL('icons.json',dir),JSON.stringify({icons,tools}));
+let html=fs.readFileSync(new URL('index.html',dir),'utf8');
+html=html.replace(/<link rel="stylesheet" href="details.css">/g,'').replace(/<script src="details.js[^"]*"><\/script>/g,'');
+html=html.replace('<main>','<link rel="stylesheet" href="details.css"><main>');
+html+='<script src="details.js?v=intro-static-3"></script>';
+fs.writeFileSync(new URL('index.html',dir),html);
+// Copy the card surface from the actual portfolio, including its hover sheen.
+const sheet=fs.readFileSync(new URL('../../src/feature-deck.css',dir),'utf8');
+const base=fs.readFileSync(new URL('../../src/styles.css',dir),'utf8').match(/^:root\{[^}]+\}/)[0];
+const surface=sheet.match(/\.flip-face\{([^}]+)\}/)[1];
+const sheen=sheet.match(/\.flip-face::before\{([^}]+)\}/)[1];
+fs.writeFileSync(new URL('surface.css',dir),`${base}\nbody{background:var(--bg)!important}main{display:block;height:auto;margin:auto;padding:44px 50px 24px;max-width:1250px;border:0;box-shadow:none;background:none}main::before{content:none}.map{background:#fcfcfb;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px #e7e7e4}.map>svg{margin:0;background:linear-gradient(135deg,#fdfdfc,#f7f7f5)} @media(max-width:650px){main{padding:24px 18px}.map{overflow:auto}}`);

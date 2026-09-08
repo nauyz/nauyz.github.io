@@ -1,0 +1,27 @@
+.studio-deck{scroll-margin-top:-92px}
+.studio-deck .deck-perspective{max-width:1380px;height:min(650px,100%)}
+.studio-deck .studio-face{grid-template-columns:minmax(0,2.1fr) minmax(0,1fr);gap:32px;padding:32px;align-items:center}
+.studio-visual{min-width:0;max-height:100%;display:flex;flex-direction:column;align-self:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:0 18px 45px #0003}
+.studio-canvas{width:100%;aspect-ratio:1.603;min-height:0;flex-shrink:1;position:relative;overflow:hidden;background:#f5f4ef}
+.studio-canvas>img,.studio-canvas>video{display:block;width:100%;height:100%;object-fit:contain;will-change:transform}
+.studio-caption,.studio-playbar{flex-shrink:0}
+.studio-canvas:has(.studio-map){background:var(--surface)}
+.studio-caption{padding:16px 18px 8px;font-size:13px;line-height:1.5;color:var(--text);min-height:44px}
+.studio-playbar{padding:4px 14px 12px;display:flex;align-items:center;gap:6px}
+.studio-playbar button{display:grid;place-items:center;width:34px;height:32px;border-radius:6px;color:var(--muted)}
+.studio-playbar button:hover{color:var(--accent);background:var(--line)}
+.studio-progress{height:2px;background:var(--line);flex:1;margin-right:12px;overflow:hidden}.studio-progress span{display:block;height:100%;background:var(--accent)}
+.studio-copy{min-width:0;display:flex;flex-direction:column;align-self:stretch;justify-content:center;padding:10px 0}
+.studio-copy .feature-label{font-size:10px;margin-bottom:24px;letter-spacing:.14em}
+.studio-deck .studio-copy h2{font-family:var(--sans);font-size:clamp(23px,2.35vw,34px);font-weight:500;line-height:1.5;letter-spacing:-.04em;margin:0 0 20px}
+.studio-copy>p{font-size:14px;line-height:1.95;color:var(--muted);margin:0 0 24px}
+.studio-copy ul{list-style:none;padding:0;margin:0}.studio-copy li{border-top:1px solid var(--line);padding:12px 0;display:flex;align-items:center;gap:16px;font-size:13px}.studio-copy li>span{color:var(--accent);font:11px var(--mono)}
+.studio-copy>small{font-size:11px;color:var(--muted);line-height:1.8;margin-top:12px}
+.studio-face-number{display:flex;align-items:center;justify-content:space-between;font:60px/1 var(--display);color:var(--line);margin-top:24px}.studio-face-number span{font:9px/1.8 var(--mono);letter-spacing:.16em;color:var(--muted)}
+.studio-map{display:block;width:100%;height:100%;color:var(--muted)}
+.map-compact{display:none}
+@media(max-width:768px){.map-wide{display:none}.map-compact{display:block}.studio-canvas:has(.studio-map){aspect-ratio:4/3}}
+.map-eyebrow{fill:var(--accent);font:11px var(--mono);letter-spacing:2px}.map-stage,.map-panel{fill:var(--surface);stroke:var(--line)}.map-panel{fill:var(--bg)}.map-stage.active{stroke:var(--accent);fill:color-mix(in srgb,var(--accent) 8%,var(--surface))}.map-node{fill:var(--surface);stroke:var(--line);stroke-width:2;transition:stroke .3s,fill .3s}.map-node.active{stroke:var(--accent);fill:color-mix(in srgb,var(--accent) 20%,var(--surface))}.map-label{fill:var(--text);font:16px var(--sans)}.map-small{fill:var(--muted);font:13px var(--sans)}.map-number{fill:var(--text);font:18px var(--mono)}.map-link{fill:none;stroke:var(--line);stroke-width:2}
+@media(min-width:769px) and (max-height:800px){.studio-deck .studio-face{padding:22px;gap:26px}.studio-copy .feature-label{margin-bottom:14px}.studio-deck .studio-copy h2{font-size:26px;margin-bottom:12px}.studio-copy>p{font-size:12px;margin-bottom:14px}.studio-copy li{padding:9px 0}.studio-face-number{margin-top:12px;font-size:42px}}
+@media(max-width:768px){.studio-deck .studio-face{display:flex;gap:18px;padding:18px;overflow:auto}.studio-visual{width:100%;flex-shrink:0}.studio-copy{padding:0;flex:1;justify-content:flex-start}.studio-copy .feature-label{margin-bottom:8px;font-size:8px}.studio-deck .studio-copy h2{font-size:24px;line-height:1.4;margin-bottom:10px}.studio-copy>p{font-size:12px;line-height:1.8;margin-bottom:12px}.studio-copy ul{display:flex;gap:12px;flex-wrap:wrap}.studio-copy li{padding:8px 0;font-size:10px;gap:5px}.studio-face-number{display:none}.studio-caption{font-size:11px;padding:10px 12px 2px;min-height:36px}.studio-playbar{padding-bottom:6px}.studio-playbar button{height:44px;width:44px}.studio-copy>small{font-size:10px;margin-top:6px}}
+@media(prefers-reduced-motion:reduce){.studio-canvas>img{will-change:auto}.studio-map *{transition:none!important}}
