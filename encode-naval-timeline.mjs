@@ -1,0 +1,12 @@
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs';
+import {navalTimeline} from './src/naval-timeline.js';
+const source='个人网站视频素材/纳瓦尔app处理后.mp4',output='public/media/naval/user-timeline.mp4';
+const run=(tool,args)=>execFileSync(tool,args,{encoding:'utf8'});
+const probe=file=>JSON.parse(run('ffprobe',['-v','error','-show_streams','-of','json',file]));
+run('ffmpeg',['-hide_banner','-loglevel','error','-y','-i',source,'-map','0:v:0','-an','-vf','crop=720:1562:0:86','-c:v','libx264','-preset','medium','-crf','19','-pix_fmt','yuv420p','-movflags','+faststart',output]);
+run('ffmpeg',['-hide_banner','-loglevel','error','-y','-i',output,'-frames:v','1','-quality','92','public/media/naval/timeline-poster.webp']);
+const original=probe(source).streams.find(s=>s.codec_type==='video'),rendered=probe(output).streams;
+if(rendered.length!==1||rendered[0].nb_frames!==original.nb_frames||rendered[0].duration!==original.duration)throw Error('Source timeline changed');
+fs.writeFileSync('qa/naval/original-timeline.json',JSON.stringify({source,output,originalFrames:original.nb_frames,duration:original.duration,events:navalTimeline},null,2));
+console.log('Preserved all '+original.nb_frames+' frames, '+original.duration+' seconds.');

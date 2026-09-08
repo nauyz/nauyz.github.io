@@ -8,3 +8,4 @@
 .inline-video-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .inline-video-unavailable{font-size:10px}
 @media(pointer:coarse){.inline-video-toggle{min-height:44px;min-width:44px}}
+.project-platform{font-size:12px;color:var(--muted);padding-top:20px;line-height:1.4}

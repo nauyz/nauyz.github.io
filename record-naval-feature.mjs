@@ -1,0 +1,18 @@
+import {spawn,execFileSync} from 'node:child_process';
+import fs from 'node:fs';
+const adb='D:/ai_project/名人ip认知app/.android-tools/sdk/platform-tools/adb.exe';
+const args=['-s','9a4aa475'];
+const run=(...a)=>execFileSync(adb,[...args,...a],{maxBuffer:16*1024*1024});
+const name=process.argv[2];
+if(!['diagram','audio'].includes(name))throw Error('Choose diagram or audio');
+const remote=`/sdcard/codex-naval-${name}.mp4`;
+const p=spawn(adb,[...args,'shell','screenrecord','--display-id','4630947090644569220','--size','1080x2520','--bit-rate','12000000','--time-limit','10',remote]);
+let log='';p.stderr.on('data',x=>log+=x);
+const end=new Promise((resolve,reject)=>{p.on('error',reject);p.on('close',c=>c===0?resolve():reject(Error(log)))});
+await new Promise(r=>setTimeout(r,2200));
+if(name==='diagram')run('shell','input','tap','520','1430');
+else run('shell','input','tap','540','2050');
+await end;
+run('pull',remote,`qa/naval/${name}-raw.mp4`);
+fs.writeFileSync(`qa/naval/${name}-recording.json`,JSON.stringify({name,log,actionAt:2.2,device:'MIX Fold 4',audioIncluded:false}));
+console.log(name+' captured');

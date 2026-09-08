@@ -53,7 +53,7 @@ export default function InlineProjectVideo({ media, name }) {
     <video ref={videoRef} src={media.src} poster={media.poster} muted loop playsInline preload="none"
       aria-label={media.alt || `${name}操作演示`} onPlaying={() => { setPlaying(true); setStarted(true); }}
       onPause={() => setPlaying(false)} onError={() => { gate.current.failed = true; setFailed(true); setPlaying(false); }} />
-    {(!started || failed) && <img className="inline-video-poster" src={media.poster} alt={`${name}：内容精选页面`} />}
+    {(!started || failed) && <img className="inline-video-poster" src={media.poster} alt={media.posterAlt || `${name}界面预览`} />}
     {!failed && <button type="button" className="inline-video-toggle" onClick={toggle} aria-label={playing ? '暂停演示' : '播放演示'}>
       {playing ? <Pause size={14} weight="fill" aria-hidden="true" /> : <Play size={14} weight="fill" aria-hidden="true" />}
       <span>{playing ? '暂停' : '播放演示'}</span>
