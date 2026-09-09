@@ -1,6 +1,6 @@
 # Video Agent workflow preview
 
-The current standalone workflow is `index.html`. It is not yet wired into the portfolio StudioDeck architecture face.
+The current standalone workflow is `index.html`. A packaged copy is wired into the portfolio StudioDeck architecture face at `public/media/creator-studio/workflow/`. The front face uses the supplied recording `public/media/creator-studio/demo.mp4`.
 
 Run from the repository root:
 
