@@ -9,11 +9,13 @@ import '@fontsource/dm-sans/500.css';
 import './styles.css';
 import './feature-deck.css';
 import { otherProjects } from './projects';
-import AgentTrace from './AgentTrace';
-import RequestFlow from './RequestFlow';
+import AboutExperience from './AboutExperience';
+import StudioDeck from './StudioDeck';
+
 import ScrollRoute from './ScrollRoute';
 import InlineProjectVideo from './InlineProjectVideo';
-import StudioDeck from './StudioDeck';
+import NavalShowcase from './NavalShowcase';
+
 
 const Icon = ({ as: Component, ...props }) => <Component size={20} weight="regular" aria-hidden="true" {...props} />;
 
@@ -56,10 +58,12 @@ function ProjectGrid({ onOpen }) {
   return <section id="projects" className="project-section">
     <div className="section-title"><h2>还有这些，<span>正在发生。</span></h2><p>关于阅读、信息，以及日常生活里的更多可能。</p></div>
     <div className="project-grid">{otherProjects.map((project, index) => <motion.article className="project-card" key={project.id} initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.1 }}>
-      {project.media?.inline
+      {project.presentation === 'phone'
+        ? <NavalShowcase project={project}/>
+        : project.media?.inline
         ? <div className="cover-button project-cover-static"><div className="monitor"><div className="monitor-screen"><Media project={project}/></div><div className="monitor-chin"/></div><div className="monitor-stand"/><div className="monitor-foot"/></div>
         : <button className="cover-button" aria-label={`预览${project.name}`} onClick={() => onOpen(project)}><div className="monitor"><div className="monitor-screen"><Media project={project}/></div><div className="monitor-chin"/></div><div className="monitor-stand"/><div className="monitor-foot"/><span className="cover-open"><Icon as={ArrowUpRight} size={22}/></span></button>}
-      <div className="project-copy"><ul className="project-tags">{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul><h3>{project.name}</h3><p className="project-subtitle">{project.subtitle}</p><p className="project-description">{project.description}</p>{project.url ? <a className="text-button project-link" href={project.url} target="_blank" rel="noopener noreferrer">打开{project.name} <Icon as={ArrowUpRight}/></a> : <button className="text-button project-link" onClick={() => onOpen(project)}>探索项目 <Icon as={ArrowUpRight}/></button>}</div>
+      <div className="project-copy"><ul className="project-tags">{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul><h3>{project.name}</h3><p className="project-subtitle">{project.subtitle}</p><p className="project-description">{project.description}</p>{project.url ? <a className="text-button project-link" href={project.url} target="_blank" rel="noopener noreferrer">打开{project.name} <Icon as={ArrowUpRight}/></a> : project.platform ? <div className="project-link project-platform">{project.platform}</div> : <button className="text-button project-link" onClick={() => onOpen(project)}>探索项目 <Icon as={ArrowUpRight}/></button>}</div>
     </motion.article>)}</div>
   </section>;
 }
@@ -68,8 +72,9 @@ function App() {
   const [project, setProject] = useState(null);
   const [theme, setTheme] = useState(() => { try { return localStorage.getItem('portfolio-theme') || 'dark'; } catch { return 'dark'; } });
   useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('portfolio-theme', theme); } catch {} }, [theme]);
-  return <><a className="skip-link" href="#video">跳转到项目</a><header className="site-header"><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><nav aria-label="主导航"><a href="#video">视频创作</a><a href="#projects">更多项目</a><button className="icon-button theme-toggle" aria-label={theme === 'dark' ? '切换浅色主题' : '切换深色主题'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><Icon as={theme === 'dark' ? Sun : Moon} size={18}/></button></nav></header>
-    <main id="top"><ScrollRoute/><div className="page-intro"><h1>Selected <em>work.</em></h1><p>一些想法，一些做出来的东西。</p></div><AgentTrace/><StudioDeck/><ProjectGrid onOpen={setProject}/><RequestFlow/></main>
+  return <><a className="skip-link" href="#video">跳转到项目</a><header className="site-header"><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><nav aria-label="主导航"><a href="#video">视频创作</a><a href="#projects">更多项目</a><a href="#about">关于我</a><button className="icon-button theme-toggle" aria-label={theme === 'dark' ? '切换浅色主题' : '切换深色主题'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><Icon as={theme === 'dark' ? Sun : Moon} size={18}/></button></nav></header>
+    <main id="top"><ScrollRoute/><AboutExperience/><div className="page-intro"><h1>Selected <em>work.</em></h1><p>一些想法，一些做出来的东西。</p></div><StudioDeck/><ProjectGrid onOpen={setProject}/></main>
+
     <footer><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><a href="#top" className="back-top">回到顶部 <Icon as={ArrowUp} size={16}/></a></footer>
     {project && <ProjectDialog project={project} close={() => setProject(null)}/>}</>;
 }

@@ -1,0 +1,10 @@
+import {execFileSync} from 'node:child_process';
+const source='个人网站视频素材/信源网站处理后.mp4';
+const output='public/media/personal-signal/user-demo.mp4';
+const ff=args=>execFileSync('ffmpeg',['-hide_banner','-loglevel','error','-y',...args]);
+ff(['-i',source,'-map','0:v:0','-an','-vf','scale=1600:-2,setsar=1','-c:v','libx264','-preset','medium','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',output]);
+ff(['-i',output,'-frames:v','1','-quality','92','public/media/personal-signal/user-poster.webp']);
+const probe=file=>JSON.parse(execFileSync('ffprobe',['-v','error','-show_streams','-of','json',file],{encoding:'utf8'}));
+const original=probe(source).streams.find(s=>s.codec_type==='video'),streams=probe(output).streams;
+if(streams.length!==1||streams[0].nb_frames!==original.nb_frames||streams[0].duration!==original.duration)throw Error('Source timeline changed');
+console.log({duration:streams[0].duration,frames:streams[0].nb_frames,width:streams[0].width,height:streams[0].height});

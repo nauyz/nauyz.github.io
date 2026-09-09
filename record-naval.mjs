@@ -1,0 +1,41 @@
+import { spawn, execFileSync } from 'node:child_process';
+import fs from 'node:fs/promises';
+import { performance } from 'node:perf_hooks';
+const adb = 'D:/ai_project/名人ip认知app/.android-tools/sdk/platform-tools/adb.exe';
+const device = '9a4aa475';
+const display = '4630947090644569220';
+const run = (...args) => execFileSync(adb, ['-s', device, ...args], { maxBuffer: 16 * 1024 * 1024 });
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const qa = 'qa/naval/';
+await fs.mkdir(qa, { recursive: true });
+async function verify(name, text) {
+  run('shell', 'uiautomator', 'dump', '/sdcard/naval-showcase-ui.xml');
+  const xml = run('shell', 'cat', '/sdcard/naval-showcase-ui.xml').toString();
+  await fs.writeFile(qa + name + '.xml', xml);
+  if (!xml.includes(text) || !xml.includes('com.local.navalcognition')) throw Error(`Unexpected screen: ${name}`);
+}
+await verify('capture-start', '纳瓦尔认知库');
+run('shell', 'screencap', '-d', display, '-p', '/sdcard/naval-showcase.png');
+run('pull', '/sdcard/naval-showcase.png', qa + 'home-final.png');
+const remote = '/sdcard/codex-naval-showcase.mp4';
+const recording = spawn(adb, ['-s', device, 'shell', 'screenrecord', '--display-id', display, '--size', '1080x2520', '--bit-rate', '12000000', '--time-limit', '32', remote]);
+let output = ''; recording.stderr.on('data', b => output += b); recording.stdout.on('data', b => output += b);
+const done = new Promise((resolve, reject) => { recording.on('error', reject); recording.on('close', code => code === 0 ? resolve() : reject(Error(output))); });
+await wait(1500);
+const start = performance.now();
+const events = [];
+const at = async seconds => { await wait(Math.max(0, start + seconds * 1000 - performance.now())); };
+function tap(x, y, label) { run('shell', 'input', 'tap', String(x), String(y)); events.push({ label, seconds: (performance.now() - start) / 1000 }); }
+await at(5); tap(760, 1090, 'open original'); await verify('capture-reader', '特定知识：你天生擅长的那件事');
+await at(8); tap(850, 885, 'bilingual comparison');
+await at(10.5); tap(96, 214, 'reader back');
+await at(11); tap(665, 2370, 'saved real answer'); await verify('capture-answer', '什么是特定知识？');
+await at(18); tap(300, 1260, 'expand sources'); await verify('capture-sources', '了解财富是如何创造的');
+await at(21); tap(500, 1450, 'open cited chapter'); await verify('capture-source-reader', '双语原文');
+await at(24); tap(96, 214, 'return to answer');
+await at(24.5); tap(96, 214, 'return home');
+await at(28.1); await done;
+run('pull', remote, qa + 'raw.mp4');
+await verify('capture-end', '纳瓦尔认知库');
+await fs.writeFile(qa + 'recording.json', JSON.stringify({ device, display, raw: qa + 'raw.mp4', crop: { x: 0, y: 130, width: 1080, height: 2342 }, leadIn: 1.5, events, note: 'Saved real model answer; no new generation, fixture injection, or data reset.' }, null, 2));
+console.log(JSON.stringify({ output, events }));

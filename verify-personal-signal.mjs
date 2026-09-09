@@ -53,9 +53,8 @@ try {
     await video.evaluate(v => { v.currentTime = v.duration - 0.15; });
     await expect.poll(() => video.evaluate(v => v.currentTime < 2)).toBe(true);
     if (width === 1440) {
-      await page.getByRole('button', { name: '预览纳瓦尔 APP' }).click();
-      await expect(page.locator('dialog')).toBeVisible();
-      await page.keyboard.press('Escape'); await expect(page.locator('dialog')).toHaveCount(0);
+      await page.locator('.naval-home').click({ position: { x: 30, y: 30 } });
+      await expect(page.locator('dialog')).toHaveCount(0);
     }
   });
   await scenario('reduced-motion', { viewport: { width: 1440, height: 1100 }, reducedMotion: 'reduce' }, async (page, card, video) => {
@@ -72,13 +71,13 @@ try {
   }, page => page.addInitScript(() => {
     const original = HTMLMediaElement.prototype.play;
     let blocked = false;
-    HTMLMediaElement.prototype.play = function () { if (!blocked) { blocked = true; return Promise.reject(new DOMException('Test autoplay policy', 'NotAllowedError')); } return original.call(this); };
+    HTMLMediaElement.prototype.play = function () { if (!blocked && this.src.includes('/personal-signal/')) { blocked = true; return Promise.reject(new DOMException('Test autoplay policy', 'NotAllowedError')); } return original.call(this); };
   }));
   await scenario('missing-video', { viewport: { width: 1440, height: 1100 } }, async (page, card) => {
     await expect(card.locator('.inline-video-unavailable')).toBeVisible();
     await expect(card.locator('.inline-video-poster')).toBeVisible();
     await expect(card.getByRole('link', { name: '打开个人信源' })).toBeVisible();
-  }, page => page.route('**/media/personal-signal/demo.mp4', route => route.abort()));
+  }, page => page.route('**/media/personal-signal/user-demo.mp4', route => route.abort()));
 } finally {
   await fs.writeFile(out + 'playback-tests.json', JSON.stringify(results, null, 2));
   await browser.close();

@@ -1,0 +1,27 @@
+.naval-stage{position:relative;aspect-ratio:16/10;margin-bottom:41px;--phone-height:calc(100% + 47px);isolation:isolate}
+.naval-device{position:absolute;top:-10px;left:50%;height:var(--phone-height);aspect-ratio:1080/2342;border:1px solid #68767c;padding:5px;border-radius:22px;background:linear-gradient(130deg,#465258,#152027 35%,#35434a);box-shadow:0 15px 27px #01080b66;box-sizing:content-box}
+.naval-home{transform:translateX(calc(-50% - var(--opening) * (50% + 32px)));z-index:2}
+.naval-detail{transform:translate(32px,var(--reveal-y));opacity:var(--opening);z-index:1}
+.naval-screen{position:relative;height:100%;width:100%;border-radius:16px;overflow:hidden;background:#f6f4ef}
+.naval-screen img,.naval-screen video{display:block;width:100%;height:100%;object-fit:contain}
+.naval-detail-poster{position:absolute;inset:0}
+.naval-hotspot{position:absolute;left:5.56%;top:74.17%;width:42.78%;height:6.92%;border:1px solid #163c6970;border-radius:4px;background:#163c6910;pointer-events:none}
+.naval-hotspot.is-pressing{border-color:#163c69;background:#163c6930;box-shadow:0 0 0 2px #163c6912}
+.naval-tap-hand{position:absolute;width:29px;height:36px;left:calc(70% - 12px);top:calc(var(--hand-y,55%) - 7px);filter:drop-shadow(0 2px 3px #172b3430);z-index:3;overflow:visible;transform-origin:40% 18%}
+
+.naval-tap-ring{position:absolute;left:70%;top:var(--hand-y,55%);width:16px;height:16px;border:1px solid #538599;border-radius:50%;z-index:2}
+.naval-transfer{position:absolute;left:50%;top:calc(50% + 19.5px);height:30px;transform:translate(-50%,-50%);z-index:5;pointer-events:none;color:#71858c;display:flex;align-items:center;flex-direction:column;gap:7px}
+.naval-transfer svg{width:44px;height:30px;overflow:visible;transition:none}
+.naval-transfer svg path{stroke:currentColor;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.naval-transfer svg .naval-transfer-signal{stroke:#07d28f;stroke-width:4.5;opacity:0}
+.naval-transfer.is-active svg{filter:drop-shadow(0 0 4px #07d28f40)}
+.naval-transfer.is-active .naval-transfer-signal{opacity:1}
+.naval-transfer span{position:absolute;top:calc(100% + 7px);font:500 9px/1.2 var(--sans);white-space:nowrap;color:#07d28f;padding:3px 0;opacity:0;transition:none}
+.naval-transfer.has-caption span{opacity:1}
+
+@media(max-width:700px){.naval-tap-hand{width:24px;height:30px;left:calc(70% - 10px);top:calc(var(--hand-y,55%) - 6px)}.naval-transfer svg{width:32px;height:24px}.naval-transfer span{font-size:8px;padding:3px}.naval-transfer{top:calc(50% + 6px);height:24px}}
+@media(prefers-reduced-motion:reduce){.naval-transfer svg,.naval-transfer span{transition:none}}
+@media(max-width:700px){.naval-stage{aspect-ratio:auto;height:clamp(230px,65vw,280px);--phone-height:calc(100% + 22px)}.naval-home{transform:translateX(calc(-50% - var(--opening) * (50% + 21px)))}.naval-detail{transform:translate(21px,var(--reveal-y))}.naval-device{padding:4px;border-radius:17px}.naval-screen{border-radius:12px}}
+
+
+.naval-tap-ring{border-color:#07d28f}

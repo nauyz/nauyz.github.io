@@ -25,16 +25,16 @@ export const featuredProjects = [
 
 export const otherProjects = [
   {
-    id: 'naval', name: '纳瓦尔 APP', english: 'Naval.', subtitle: 'A space for a clearer mind.',
-    description: '把值得反复阅读的思想，放进一个随时可以打开的空间。这里将介绍纳瓦尔 APP 的阅读体验与核心功能。',
-    tags: ['移动应用', '阅读与思考'], coverLabel: '阅读，让思考发生。',
-    detail: '这里预留 APP 的产品背景、功能亮点、使用演示和下载入口。当前为展示结构示例，正式内容稍后填充。', media: null,
+    id: 'naval', name: '纳瓦尔认知库', subtitle: 'Read. Reflect. Understand.',
+    description: '把纳瓦尔的思想带在身边。阅读双语原文，借助图解与音频理解，再用手机上的本地问答梳理问题、查看相关原文。',
+    tags: ['Android 应用', '离线阅读与问答'], presentation: 'phone', platform: 'Android · 本地运行',
+    media: { type: 'video', inline: true, src: '/media/naval/demo.mp4', poster: '/media/naval/poster.webp', showcaseSrc: '/media/naval/user-timeline.mp4', showcasePoster: '/media/naval/timeline-poster.webp', posterAlt: '纳瓦尔认知库：首页人物、今日思想与阅读入口', alt: '纳瓦尔认知库：双语阅读、本地问答与相关原文的真机操作演示' },
   },
   {
     id: 'news', name: '个人信源', subtitle: 'Your sources. Your perspective.',
     description: '把 AI 内容、开源项目、新产品与社区讨论放进一个入口。按兴趣筛选，回到原文核验，让每天的信息浏览更有方向。',
     tags: ['Web 应用', '信息筛选'],
     url: 'https://nauyz.github.io/personal-signal-desk/',
-    media: { type: 'video', inline: true, src: '/media/personal-signal/demo.mp4', poster: '/media/personal-signal/poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
+    media: { type: 'video', inline: true, src: '/media/personal-signal/user-demo.mp4', poster: '/media/personal-signal/user-poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
   },
 ];
