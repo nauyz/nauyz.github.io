@@ -1,3 +1,4 @@
+import useStudioVideoSource from './useStudioVideoSource';
 import ProjectOverview from './ProjectOverview';
 import React,{useEffect,useRef,useState} from 'react';
 import {motion,useMotionValueEvent,useReducedMotion,useScroll,useTransform} from 'motion/react';
@@ -10,6 +11,7 @@ function StudioFace({scene,running,reduce}){
   const [playing,setPlaying]=useState(false),[waiting,setWaiting]=useState(false);
   const video=useRef(null),frame=useRef(null),dragging=useRef(false);
   const architecture=scene.kind==='architecture';
+  const {source,loading,loadError,retry,useCachedFile}=useStudioVideoSource(scene.media,architecture);
   const startOffset=scene.startOffset??0,playbackRate=scene.playbackRate??1;
   const duration=(scene.duration-startOffset)/playbackRate;
   // Native video seeking preserves playback; avoid an asynchronous play() restart
@@ -17,7 +19,7 @@ function StudioFace({scene,running,reduce}){
   const enabled=running&&!paused&&(!architecture||!scrubbing)&&(!architecture||frameReady)&&(!reduce||manual);
 
   useEffect(()=>{if(!enabled||!architecture)return;let raf,last=performance.now();const tick=now=>{setTime(t=>(t+Math.min((now-last)/1000,.1))%duration);last=now;raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf);},[enabled,architecture,duration]);
-  useEffect(()=>{const media=video.current;if(!media)return;let cancelled=false;if(enabled)media.play().catch(()=>{if(!cancelled)setPaused(true);});else media.pause();return()=>{cancelled=true;};},[enabled]);
+  useEffect(()=>{const media=video.current;if(!media||!source)return;let cancelled=false;if(enabled)media.play().catch(()=>{if(!cancelled)setPaused(true);});else media.pause();return()=>{cancelled=true;};},[enabled,source]);
   useEffect(()=>{if(frameReady)frame.current?.contentWindow?.setJourneyTime?.(reduce&&!manual?scene.duration-1:startOffset+time*playbackRate);},[time,frameReady,reduce,manual,scene.duration,startOffset,playbackRate]);
   function seek(value){const next=Math.max(0,Math.min(duration-.01,Number(value)));if(reduce&&!manual)setPaused(true);setManual(true);setTime(next);if(video.current)video.current.currentTime=next;}
   function beginScrub(e){dragging.current=true;setScrubbing(true);e.currentTarget.setPointerCapture(e.pointerId);}
@@ -39,8 +41,8 @@ function StudioFace({scene,running,reduce}){
   }
   function replay(){setTime(0);setPaused(false);setManual(true);if(video.current)video.current.currentTime=0;}
   return <><div className="studio-visual"><div className={`studio-canvas ${architecture?'studio-workflow':'studio-recording'}`} data-time={time.toFixed(2)} data-running={enabled}>
-    {architecture?<iframe ref={frame} src={scene.media.src} title="视频生产 Agent 工作流编排动画" onLoad={()=>setFrameReady(true)} tabIndex={-1}/>:failed?<img src={scene.media.poster} alt="视频工作台演示封面"/>:<video ref={video} src={scene.media.src} poster={scene.media.poster} muted playsInline loop preload="metadata" onPlaying={()=>{setPlaying(true);setWaiting(false);}} onPause={()=>{setPlaying(false);setWaiting(false);}} onWaiting={()=>{setPlaying(false);setWaiting(true);}} onSeeking={()=>{setPlaying(false);setWaiting(true);}} onTimeUpdate={e=>{if(!dragging.current)setTime(e.currentTarget.currentTime);}} onError={()=>{setFailed(true);setPaused(true);setPlaying(false);setWaiting(false);}}/>}
-    </div><div className="studio-playbar"><input className="studio-progress" type="range" min="0" max={duration-.01} step="0.1" value={time} aria-label={architecture?'流程动画进度':'视频进度'} aria-valuetext={`${Math.floor(time)} 秒，共 ${Math.round(duration)} 秒`} style={{'--progress':`${time/duration*100}%`}} disabled={failed||(architecture&&!frameReady)} onPointerDown={beginScrub} onPointerUp={endScrub} onPointerCancel={endScrub} onLostPointerCapture={endScrub} onBlur={endScrub} onChange={e=>seek(e.target.value)} onKeyDown={e=>e.stopPropagation()}/><button aria-label={(architecture?enabled:playing)?'暂停展示':'播放展示'} title={waiting?'视频缓冲中，点击重试播放':undefined} onClick={togglePlayback} disabled={failed}>{(architecture?enabled:playing)?<Pause size={15}/>:<Play size={15}/>}</button><button aria-label="重播展示" onClick={replay} disabled={failed}><ArrowCounterClockwise size={16}/></button>{failed&&<small>视频暂时无法播放</small>}</div></div>
+    {architecture?<iframe ref={frame} src={scene.media.src} title="视频生产 Agent 工作流编排动画" onLoad={()=>setFrameReady(true)} tabIndex={-1}/>:failed||!source?<img src={scene.media.poster} alt="视频工作台演示封面"/>:<video ref={video} src={source||undefined} poster={scene.media.poster} muted playsInline loop preload="metadata" onPlaying={()=>{setPlaying(true);setWaiting(false);}} onPause={()=>{setPlaying(false);setWaiting(false);}} onWaiting={()=>{setPlaying(false);setWaiting(true);}} onSeeking={()=>{setPlaying(false);setWaiting(true);}} onTimeUpdate={e=>{if(!dragging.current)setTime(e.currentTarget.currentTime);}} onError={e=>{if(source?.startsWith('blob:')&&e.currentTarget.error?.code===4){useCachedFile();return;}setFailed(true);setPaused(true);setPlaying(false);setWaiting(false);}}/>}
+    </div><div className="studio-playbar"><input className="studio-progress" type="range" min="0" max={duration-.01} step="0.1" value={time} aria-label={architecture?'流程动画进度':'视频进度'} aria-valuetext={`${Math.floor(time)} 秒，共 ${Math.round(duration)} 秒`} style={{'--progress':`${time/duration*100}%`}} disabled={failed||loading||loadError||(architecture&&!frameReady)} onPointerDown={beginScrub} onPointerUp={endScrub} onPointerCancel={endScrub} onLostPointerCapture={endScrub} onBlur={endScrub} onChange={e=>seek(e.target.value)} onKeyDown={e=>e.stopPropagation()}/><button aria-label={(architecture?enabled:playing)?'暂停展示':'播放展示'} title={waiting?'视频缓冲中，点击重试播放':undefined} onClick={togglePlayback} disabled={failed||loading||loadError}>{(architecture?enabled:playing)?<Pause size={15}/>:<Play size={15}/>}</button><button aria-label="重播展示" onClick={replay} disabled={failed||loading||loadError}><ArrowCounterClockwise size={16}/></button>{loading&&<small role="status">正在加载演示…</small>}{loadError&&<button onClick={retry}>重新加载</button>}{failed&&<small>视频暂时无法播放</small>}</div></div>
     {!architecture&&<aside className="studio-copy"><ProjectOverview tagline="Agent Workflow" description={scene.description} points={scene.points}/></aside>}</>;
 }
 export default function StudioDeck(){

@@ -9,7 +9,7 @@ export default function VideoDiagnostics(){
       const host=document.querySelector('.studio-recording'),v=host?.querySelector('video'),deck=document.querySelector('#video');
       if(!v)return '找不到录屏视频';
       const ranges=[];for(let i=0;i<v.buffered.length;i++)ranges.push(`${v.buffered.start(i).toFixed(1)}-${v.buffered.end(i).toFixed(1)}`);
-      return `版本 diag-1 · 时间 ${v.currentTime.toFixed(1)}s\n暂停 ${v.paused} · 跳转 ${v.seeking} · 就绪 ${v.readyState} · 网络 ${v.networkState}\n允许播放 ${host.dataset.running} · 可见 ${deck.dataset.visible} · 正面 ${deck.dataset.face==='0'} · 翻转停止 ${deck.dataset.settled}\n帧数 ${v.getVideoPlaybackQuality?.().totalVideoFrames??'未知'} · 滚动 ${Math.round(scrollY)} · 后台 ${document.hidden}\n缓冲 ${ranges.join(', ')||'无'} · 错误 ${v.error?.code??'无'}`;
+      return `版本 diag-2 · ${v.currentSrc.startsWith('blob:')?'完整本地视频':'网络视频'} · 时间 ${v.currentTime.toFixed(1)}s\n暂停 ${v.paused} · 跳转 ${v.seeking} · 就绪 ${v.readyState} · 网络 ${v.networkState}\n允许播放 ${host.dataset.running} · 可见 ${deck.dataset.visible} · 正面 ${deck.dataset.face==='0'} · 翻转停止 ${deck.dataset.settled}\n帧数 ${v.getVideoPlaybackQuality?.().totalVideoFrames??'未知'} · 滚动 ${Math.round(scrollY)} · 后台 ${document.hidden}\n缓冲 ${ranges.join(', ')||'无'} · 错误 ${v.error?.code??'无'}`;
     };
     const refresh=()=>{const state=sample();latest.current=`${navigator.userAgent}\n${state}\n${history.current.join('\n')}`;setReport(state);};
     const event=e=>{

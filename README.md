@@ -55,3 +55,4 @@ git push origin master
 ```
 
 部署状态可在 GitHub 仓库的 Actions 页面查看。视频、图片、字体与简历随静态站点一起发布，不依赖本地服务。
+手机录屏：启动和构建前自动运行 scripts/prepare-studio-mobile.mjs，需要本机可执行 ffmpeg。生成的 mobile.mp4 不入库，部署时自动生成；移动端完整下载后使用本地 Blob 播放，避免拖动时反复请求远端片段。运行 node verify-studio-mobile.mjs 检查加载后离线跳转。
