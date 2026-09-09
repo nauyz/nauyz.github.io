@@ -1,3 +1,4 @@
+import VideoDiagnostics from './VideoDiagnostics';
 import ProjectOverview from './ProjectOverview';
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -80,7 +81,7 @@ function App() {
     <main id="top"><ScrollRoute/><AboutExperience/><div className="page-intro"><h1>个人项目</h1></div><StudioDeck/><ProjectGrid onOpen={setProject}/></main>
 
     <footer><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><a href="#top" className="back-top">回到顶部 <Icon as={ArrowUp} size={16}/></a></footer>
-    {project && <ProjectDialog project={project} close={() => setProject(null)}/>}</>;
+    {new URLSearchParams(location.search).get('video_debug') === '1' && <VideoDiagnostics/>}{project && <ProjectDialog project={project} close={() => setProject(null)}/>}</>;
 }
 
 createRoot(document.getElementById('root')).render(<App/>);
