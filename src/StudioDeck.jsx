@@ -7,6 +7,7 @@ import './studio-deck.css';
 
 function StudioFace({scene,running,reduce}){
   const [time,setTime]=useState(0),[paused,setPaused]=useState(false),[manual,setManual]=useState(false),[failed,setFailed]=useState(false),[frameReady,setFrameReady]=useState(false),[scrubbing,setScrubbing]=useState(false);
+  const [playing,setPlaying]=useState(false),[waiting,setWaiting]=useState(false);
   const video=useRef(null),frame=useRef(null),dragging=useRef(false);
   const architecture=scene.kind==='architecture';
   const startOffset=scene.startOffset??0,playbackRate=scene.playbackRate??1;
@@ -21,10 +22,25 @@ function StudioFace({scene,running,reduce}){
   function seek(value){const next=Math.max(0,Math.min(duration-.01,Number(value)));if(reduce&&!manual)setPaused(true);setManual(true);setTime(next);if(video.current)video.current.currentTime=next;}
   function beginScrub(e){dragging.current=true;setScrubbing(true);e.currentTarget.setPointerCapture(e.pointerId);}
   function endScrub(){dragging.current=false;setScrubbing(false);}
+  function togglePlayback(){
+    setManual(true);
+    if(architecture){setPaused(enabled);return;}
+    const media=video.current;
+    if(!media)return;
+    if(playing&&!media.paused){setPaused(true);media.pause();return;}
+    setPaused(false);
+    if(waiting&&media.readyState<3){
+      const resumeAt=media.currentTime;
+      media.load();
+      media.currentTime=resumeAt;
+    }
+    // Call inside the tap handler: embedded mobile browsers require user activation.
+    media.play().catch(()=>{setPlaying(false);setWaiting(false);setPaused(true);});
+  }
   function replay(){setTime(0);setPaused(false);setManual(true);if(video.current)video.current.currentTime=0;}
   return <><div className="studio-visual"><div className={`studio-canvas ${architecture?'studio-workflow':'studio-recording'}`} data-time={time.toFixed(2)} data-running={enabled}>
-    {architecture?<iframe ref={frame} src={scene.media.src} title="视频生产 Agent 工作流编排动画" onLoad={()=>setFrameReady(true)} tabIndex={-1}/>:failed?<img src={scene.media.poster} alt="视频工作台演示封面"/>:<video ref={video} src={scene.media.src} poster={scene.media.poster} muted playsInline loop preload="metadata" onTimeUpdate={e=>{if(!dragging.current)setTime(e.currentTarget.currentTime);}} onError={()=>{setFailed(true);setPaused(true);}}/>}
-    </div><div className="studio-playbar"><input className="studio-progress" type="range" min="0" max={duration-.01} step="0.1" value={time} aria-label={architecture?'流程动画进度':'视频进度'} aria-valuetext={`${Math.floor(time)} 秒，共 ${Math.round(duration)} 秒`} style={{'--progress':`${time/duration*100}%`}} disabled={failed||(architecture&&!frameReady)} onPointerDown={beginScrub} onPointerUp={endScrub} onPointerCancel={endScrub} onLostPointerCapture={endScrub} onBlur={endScrub} onChange={e=>seek(e.target.value)} onKeyDown={e=>e.stopPropagation()}/><button aria-label={enabled?'暂停展示':'播放展示'} onClick={()=>{setPaused(enabled);setManual(true);}} disabled={failed}>{enabled?<Pause size={15}/>:<Play size={15}/>}</button><button aria-label="重播展示" onClick={replay} disabled={failed}><ArrowCounterClockwise size={16}/></button>{failed&&<small>视频暂时无法播放</small>}</div></div>
+    {architecture?<iframe ref={frame} src={scene.media.src} title="视频生产 Agent 工作流编排动画" onLoad={()=>setFrameReady(true)} tabIndex={-1}/>:failed?<img src={scene.media.poster} alt="视频工作台演示封面"/>:<video ref={video} src={scene.media.src} poster={scene.media.poster} muted playsInline loop preload="metadata" onPlaying={()=>{setPlaying(true);setWaiting(false);}} onPause={()=>{setPlaying(false);setWaiting(false);}} onWaiting={()=>{setPlaying(false);setWaiting(true);}} onSeeking={()=>{setPlaying(false);setWaiting(true);}} onTimeUpdate={e=>{if(!dragging.current)setTime(e.currentTarget.currentTime);}} onError={()=>{setFailed(true);setPaused(true);setPlaying(false);setWaiting(false);}}/>}
+    </div><div className="studio-playbar"><input className="studio-progress" type="range" min="0" max={duration-.01} step="0.1" value={time} aria-label={architecture?'流程动画进度':'视频进度'} aria-valuetext={`${Math.floor(time)} 秒，共 ${Math.round(duration)} 秒`} style={{'--progress':`${time/duration*100}%`}} disabled={failed||(architecture&&!frameReady)} onPointerDown={beginScrub} onPointerUp={endScrub} onPointerCancel={endScrub} onLostPointerCapture={endScrub} onBlur={endScrub} onChange={e=>seek(e.target.value)} onKeyDown={e=>e.stopPropagation()}/><button aria-label={(architecture?enabled:playing)?'暂停展示':'播放展示'} title={waiting?'视频缓冲中，点击重试播放':undefined} onClick={togglePlayback} disabled={failed}>{(architecture?enabled:playing)?<Pause size={15}/>:<Play size={15}/>}</button><button aria-label="重播展示" onClick={replay} disabled={failed}><ArrowCounterClockwise size={16}/></button>{failed&&<small>视频暂时无法播放</small>}</div></div>
     {!architecture&&<aside className="studio-copy"><ProjectOverview tagline="Agent Workflow" description={scene.description} points={scene.points}/></aside>}</>;
 }
 export default function StudioDeck(){
