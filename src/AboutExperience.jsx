@@ -38,10 +38,15 @@ export default function AboutExperience() {
   const job = workHistory[selected];
   return <div className="about-experience">
     <RequestFlow data={journey} experience>
-      <section id="work-history" className="work-history" aria-labelledby="work-history-heading">
-      <div className="work-history-heading"><h2 id="work-history-heading">工作经历</h2>
-        <button className="trace-expand" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(value => !value)}>{expanded ? '收起完整经历' : '展示完整经历'}<CaretDown size={14} aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined }}/></button>
-      </div>
+      <address className="about-contact" id="contact">
+        <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
+        <a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} aria-hidden="true"/>{profile.email}</a>
+        <span className="about-contact-actions">
+          <button className="about-download" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(value => !value)}>{expanded ? '收起完整经历' : '展示完整经历'}<CaretDown size={18} aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined }}/></button>
+          <a className="about-download" href={profile.resume} download="张裕安-简历.pdf">下载简历<ArrowUpRight size={18} aria-hidden="true"/></a>
+        </span>
+      </address>
+      <section id="work-history" className="work-history" aria-label="完整工作经历">
       <div id={panelId} hidden={!expanded}>
       <div className="work-company-selector" role="group" aria-label="选择公司经历">
         {workHistory.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === index} onClick={() => setSelected(index)}><span>{item.company}</span><small>{item.dates}</small></button>)}
@@ -49,11 +54,6 @@ export default function AboutExperience() {
       <AgentTrace key={job.id} data={traces[selected]} experience detailsOnly details={<WorkDetails job={job}/>}/>
       </div>
       </section>
-      <address className="about-contact" id="contact">
-        <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
-        <a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} aria-hidden="true"/>{profile.email}</a>
-        <a className="about-download" href={profile.resume} download="张裕安-简历.pdf">下载简历<ArrowUpRight size={18} aria-hidden="true"/></a>
-      </address>
     </RequestFlow>
   </div>;
 }

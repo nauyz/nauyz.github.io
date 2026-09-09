@@ -57,7 +57,7 @@ function ProjectDialog({ project, close }) {
 function ProjectGrid({ onOpen }) {
   const reduce = useReducedMotion();
   return <section id="projects" className="project-section">
-    <div className="section-title"><h2>还有这些，<span>正在发生。</span></h2><p>关于阅读、信息，以及日常生活里的更多可能。</p></div>
+
     <div className="project-grid">{otherProjects.map((project, index) => <motion.article className="project-card" key={project.id} initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.1 }}>
       {project.presentation === 'phone'
         ? <NavalShowcase project={project}/>
@@ -74,7 +74,7 @@ function App() {
   const [theme, setTheme] = useState(() => { try { return localStorage.getItem('portfolio-theme') || 'dark'; } catch { return 'dark'; } });
   useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('portfolio-theme', theme); } catch {} }, [theme]);
   return <><a className="skip-link" href="#video">跳转到项目</a><header className="site-header"><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><nav aria-label="主导航"><a href="#video">视频创作</a><a href="#projects">更多项目</a><a href="#about">关于我</a><button className="icon-button theme-toggle" aria-label={theme === 'dark' ? '切换浅色主题' : '切换深色主题'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><Icon as={theme === 'dark' ? Sun : Moon} size={18}/></button></nav></header>
-    <main id="top"><ScrollRoute/><AboutExperience/><div className="page-intro"><h1>Selected <em>work.</em></h1><p>一些想法，一些做出来的东西。</p></div><StudioDeck/><ProjectGrid onOpen={setProject}/></main>
+    <main id="top"><ScrollRoute/><AboutExperience/><div className="page-intro"><h1>个人项目</h1></div><StudioDeck/><ProjectGrid onOpen={setProject}/></main>
 
     <footer><a href="#top" className="wordmark">Personal<span> / </span>Portfolio</a><a href="#top" className="back-top">回到顶部 <Icon as={ArrowUp} size={16}/></a></footer>
     {project && <ProjectDialog project={project} close={() => setProject(null)}/>}</>;
