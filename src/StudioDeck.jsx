@@ -11,7 +11,9 @@ function StudioFace({scene,running,reduce}){
   const architecture=scene.kind==='architecture';
   const startOffset=scene.startOffset??0,playbackRate=scene.playbackRate??1;
   const duration=(scene.duration-startOffset)/playbackRate;
-  const enabled=running&&!paused&&!scrubbing&&(!architecture||frameReady)&&(!reduce||manual);
+  // Native video seeking preserves playback; avoid an asynchronous play() restart
+  // after touch release, which mobile browsers may reject. Only freeze the iframe clock.
+  const enabled=running&&!paused&&(!architecture||!scrubbing)&&(!architecture||frameReady)&&(!reduce||manual);
 
   useEffect(()=>{if(!enabled||!architecture)return;let raf,last=performance.now();const tick=now=>{setTime(t=>(t+Math.min((now-last)/1000,.1))%duration);last=now;raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf);},[enabled,architecture,duration]);
   useEffect(()=>{const media=video.current;if(!media)return;let cancelled=false;if(enabled)media.play().catch(()=>{if(!cancelled)setPaused(true);});else media.pause();return()=>{cancelled=true;};},[enabled]);
