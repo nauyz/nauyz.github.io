@@ -15,6 +15,7 @@ import StudioDeck from './StudioDeck';
 import ScrollRoute from './ScrollRoute';
 import InlineProjectVideo from './InlineProjectVideo';
 import NavalShowcase from './NavalShowcase';
+import './theme.css';
 
 
 const Icon = ({ as: Component, ...props }) => <Component size={20} weight="regular" aria-hidden="true" {...props} />;
