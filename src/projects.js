@@ -25,16 +25,18 @@ export const featuredProjects = [
 
 export const otherProjects = [
   {
-    id: 'naval', name: '纳瓦尔认知库', subtitle: 'Read. Reflect. Understand.',
-    description: '把纳瓦尔的思想带在身边。阅读双语原文，借助图解与音频理解，再用手机上的本地问答梳理问题、查看相关原文。',
-    tags: ['Android 应用', '离线阅读与问答'], presentation: 'phone', platform: 'Android · 本地运行',
+    id: 'naval', name: '知识库APP', tagline: 'On-device Knowledge', subtitle: '把个人知识库做成随身应用',
+    description: '以纳瓦尔内容为例，将双语阅读、图解、音频与知识问答整合进 Android 应用，让用户随身阅读、离线提问并查阅相关原文。',
+    implementation: '借助 AI 编程构建 Android 应用，接入手机本地推理与原文检索，将内容阅读和知识问答串成完整的使用流程。',
+    tags: ['AI 辅助开发', '端侧推理', '知识检索'], presentation: 'phone', platform: 'Android · 本地运行',
     media: { type: 'video', inline: true, src: '/media/naval/demo.mp4', poster: '/media/naval/poster.webp', showcaseSrc: '/media/naval/user-timeline.mp4', showcasePoster: '/media/naval/timeline-poster.webp', posterAlt: '纳瓦尔认知库：首页人物、今日思想与阅读入口', alt: '纳瓦尔认知库：双语阅读、本地问答与相关原文的真机操作演示' },
   },
   {
-    id: 'news', name: '个人信源', subtitle: 'Your sources. Your perspective.',
-    description: '把 AI 内容、开源项目、新产品与社区讨论放进一个入口。按兴趣筛选，回到原文核验，让每天的信息浏览更有方向。',
-    tags: ['Web 应用', '信息筛选'],
+    id: 'news', name: 'AI信息网站', tagline: 'AI Information Hub', subtitle: '集中浏览与筛选 AI 行业信息',
+    description: '集中浏览 AI 资讯、开源项目、新产品与社区讨论，按主题筛选感兴趣的内容，并回到原文查看详情。',
+    implementation: '借助 AI 编程构建 Web 应用，将多来源内容聚合、分类筛选与原文跳转整合到统一界面，形成可日常使用的信息浏览工具。',
+    tags: ['AI 辅助开发', '多源信息聚合', 'Web 应用'],
     url: 'https://nauyz.github.io/personal-signal-desk/',
-    media: { type: 'video', inline: true, src: '/media/personal-signal/user-demo.mp4', poster: '/media/personal-signal/user-poster.webp', alt: '个人信源：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
+    media: { type: 'video', inline: true, src: '/media/personal-signal/user-demo.mp4', poster: '/media/personal-signal/user-poster.webp', alt: 'AI信息网站：精选内容、智能体筛选、原文入口与 GitHub 热门项目演示' },
   },
 ];

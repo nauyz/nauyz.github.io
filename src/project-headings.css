@@ -1,0 +1,27 @@
+/* Shared project-name hierarchy; presentation and playback stay independent. */
+.project-name-bar .project-visit-button{display:inline-flex;align-self:flex-start;align-items:center;justify-content:center;width:auto;min-height:44px;padding:0 16px;gap:10px;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:8px;background:color-mix(in srgb,var(--accent) 5%,var(--card));color:var(--accent);font:500 14px var(--sans);white-space:nowrap;transition:background .2s,border-color .2s}
+.project-name-bar .project-visit-button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card));border-color:var(--accent)}
+.project-name-bar .project-visit-button svg{width:18px;height:18px}
+.project-name-bar .project-visit-button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.project-overview{font-family:var(--sans);margin-bottom:24px}
+.project-overview .project-subtitle{font:italic 500 12px/1.5 var(--display);color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px}
+@media(max-width:768px){.project-overview .project-subtitle{font-size:11px}}
+.studio-copy .project-implementation-points{margin-top:24px}
+.project-overview .project-purpose{font-size:17px;line-height:1.85;color:var(--text);margin:0}
+.project-implementation{border-top:1px solid var(--line);margin-top:24px;padding-top:20px}
+.project-overview .project-implementation h3{font-family:var(--sans);font-size:12px;font-weight:500;line-height:1.5;letter-spacing:.04em;color:var(--muted);margin:0 0 10px}
+.project-implementation p{font-size:14px;line-height:1.9;color:var(--muted);margin:0}
+@media(max-width:768px){.project-overview .project-purpose{font-size:15px}.project-implementation{margin-top:18px;padding-top:16px}.project-implementation p{font-size:13px}}
+.project-name{font-family:var(--sans);font-size:28px;font-weight:500;line-height:1.4;letter-spacing:-.02em;color:var(--text);margin:0;text-align:left}
+.project-grid .project-card{grid-row:span 3}
+.project-card>.project-name-bar{padding:32px 36px 0;margin-bottom:24px}
+.project-card>.cover-button{padding-top:0}
+.studio-deck .feature-sticky{gap:24px}
+.studio-deck .studio-copy .studio-intro-title{font-family:var(--sans);font-size:22px;font-weight:400;line-height:1.5;letter-spacing:-.02em;color:var(--muted);margin:0 0 20px}
+.studio-intro-title>span{display:block}
+@media(min-width:1600px){.project-card>.project-name-bar{padding-inline:44px}}
+@media(min-width:769px) and (max-width:1024px){.project-card>.project-name-bar{padding-inline:24px}}
+@media(max-width:768px){.project-name{font-size:22px}.project-card>.project-name-bar{padding:24px 26px 0}.studio-deck .studio-copy .studio-intro-title{font-size:18px;margin-bottom:10px}}
+
+.project-card>.project-name-bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.project-name-bar .project-visit-button{flex-shrink:0;align-self:center}

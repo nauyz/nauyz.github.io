@@ -43,3 +43,15 @@ media: { type: 'video', src: '/demo.mp4', poster: '/poster.jpg', alt: '视频生
 启动本地服务器后运行 `node verify.mjs`。脚本自动查找 Windows Chrome / Edge，也支持 `CHROME_PATH` 指定浏览器、`PREVIEW_URL` 指定测试地址。浏览器截图与结果保存在 `qa/`。
 
 参考布局：https://harisahmed.dev/ 和用户提供的 https://priyanshupaul.vercel.app/ 截图。设计借鉴结构与交互，未复制作者身份、项目文案或产品截图。既有粒子演示文件保留独立。
+
+## 线上部署
+
+正式地址：https://nauyz.github.io/
+
+通过 GitHub Pages 免费托管。`.github/workflows/deploy-pages.yml` 会在 `master` 推送后自动安装依赖、构建并发布 `dist/`。功能分支可继续开发，合入 `master` 并推送后才更新线上网站。
+
+```sh
+git push origin master
+```
+
+部署状态可在 GitHub 仓库的 Actions 页面查看。视频、图片、字体与简历随静态站点一起发布，不依赖本地服务。
