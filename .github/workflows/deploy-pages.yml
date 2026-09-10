@@ -35,6 +35,9 @@ jobs:
           ffmpeg -hide_banner -loglevel error -i public/media/creator-studio/demo.mp4 -map 0 -c copy -movflags +faststart -max_interleave_delta 1000000 /tmp/studio-faststart.mp4
           mv /tmp/studio-faststart.mp4 public/media/creator-studio/demo.mp4
       - run: npm run build
+        env:
+          VITE_UMAMI_WEBSITE_ID: ${{ vars.VITE_UMAMI_WEBSITE_ID }}
+          VITE_UMAMI_SCRIPT_URL: ${{ vars.VITE_UMAMI_SCRIPT_URL }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

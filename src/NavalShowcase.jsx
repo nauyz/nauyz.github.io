@@ -88,7 +88,7 @@ export default function NavalShowcase({project}) {
         <span>{caption??''}</span>
       </div>
       <div className="naval-device naval-detail" aria-hidden={opening===0}><div className="naval-screen">
-        <video ref={video} src={project.media.showcaseSrc} poster={project.media.showcasePoster} muted loop playsInline preload="none" aria-label="目录问答、原文、搜索、继续阅读、双语原文、图解、智能问答与音频真机演示"
+        <video data-analytics-project="naval" ref={video} src={project.media.showcaseSrc} poster={project.media.showcasePoster} muted loop playsInline preload="none" aria-label="目录问答、原文、搜索、继续阅读、双语原文、图解、智能问答与音频真机演示"
           onPlaying={()=>setStarted(true)} onError={()=>{gate.current.failed=true;setFailed(true);}}/>
         {(!started||failed)&&<img className="naval-detail-poster" src={project.media.showcasePoster} alt="纳瓦尔认知库录像首页"/>}
       </div></div>

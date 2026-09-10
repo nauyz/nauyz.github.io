@@ -42,8 +42,8 @@ export default function AboutExperience() {
         <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
         <a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} aria-hidden="true"/>{profile.email}</a>
         <span className="about-contact-actions">
-          <button className="about-download" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(value => !value)}>{expanded ? '收起完整经历' : '展示完整经历'}<CaretDown size={18} aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined }}/></button>
-          <a className="about-download" href={profile.resume} download="张裕安-简历.pdf">下载简历<ArrowUpRight size={18} aria-hidden="true"/></a>
+          <button data-analytics-event="experience_open" className="about-download" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(value => !value)}>{expanded ? '收起完整经历' : '展示完整经历'}<CaretDown size={18} aria-hidden="true" style={{ transform: expanded ? 'rotate(180deg)' : undefined }}/></button>
+          <a data-analytics-event="resume_download" className="about-download" href={profile.resume} download="张裕安-简历.pdf">下载简历<ArrowUpRight size={18} aria-hidden="true"/></a>
         </span>
       </address>
       <section id="work-history" className="work-history" aria-label="完整工作经历">

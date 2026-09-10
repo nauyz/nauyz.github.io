@@ -53,7 +53,7 @@ export default function InlineProjectVideo({ media, name }) {
   }
 
   return <div className="inline-project-video">
-    <video ref={videoRef} src={media.src} poster={media.poster} muted loop playsInline preload="none"
+    <video data-analytics-project={name} ref={videoRef} src={media.src} poster={media.poster} muted loop playsInline preload="none"
       aria-label={media.alt || `${name}操作演示`} onPlaying={() => { setPlaying(true); setStarted(true); }}
       onPause={() => setPlaying(false)} onError={() => { gate.current.failed = true; setFailed(true); setPlaying(false); }} />
     {(!started || failed) && <img className="inline-video-poster" src={media.poster} alt={media.posterAlt || `${name}界面预览`} />}

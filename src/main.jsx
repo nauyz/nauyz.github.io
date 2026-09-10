@@ -1,4 +1,5 @@
 import VideoDiagnostics from './VideoDiagnostics';
+import { initAnalytics } from './analytics';
 import ProjectOverview from './ProjectOverview';
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -22,6 +23,7 @@ import './project-headings.css';
 
 
 const Icon = ({ as: Component, ...props }) => <Component size={20} weight="regular" aria-hidden="true" {...props} />;
+initAnalytics({ websiteId: import.meta.env.VITE_UMAMI_WEBSITE_ID, scriptUrl: import.meta.env.VITE_UMAMI_SCRIPT_URL });
 
 function Media({ project, enlarged = false }) {
   const media = project.media;
@@ -62,7 +64,7 @@ function ProjectGrid({ onOpen }) {
   return <section id="projects" className="project-section">
 
     <div className="project-grid">{otherProjects.map((project, index) => <motion.article className="project-card" key={project.id} initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.1 }}>
-      <header className="project-name-bar"><h2 className="project-name">{project.name}</h2>{project.url && <a className="text-button project-visit-button" href={project.url} target="_blank" rel="noopener noreferrer">打开网站<Icon as={ArrowUpRight}/></a>}</header>
+      <header className="project-name-bar"><h2 className="project-name">{project.name}</h2>{project.url && <a data-analytics-event="project_visit" data-analytics-project={project.id} className="text-button project-visit-button" href={project.url} target="_blank" rel="noopener noreferrer">打开网站<Icon as={ArrowUpRight}/></a>}</header>
       {project.presentation === 'phone'
         ? <NavalShowcase project={project}/>
         : project.media?.inline
