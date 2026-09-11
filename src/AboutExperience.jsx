@@ -36,7 +36,7 @@ export default function AboutExperience() {
   const [expanded, setExpanded] = useState(false);
   const panelId = useId();
   const job = workHistory[selected];
-  return <div className="about-experience">
+  return <div data-analytics-section="about" className="about-experience">
     <RequestFlow data={journey} experience>
       <address className="about-contact" id="contact">
         <a href={`tel:${profile.phone.replaceAll('-', '')}`}><Phone size={18} aria-hidden="true"/>{profile.phone}</a>
@@ -49,7 +49,7 @@ export default function AboutExperience() {
       <section id="work-history" className="work-history" aria-label="完整工作经历">
       <div id={panelId} hidden={!expanded}>
       <div className="work-company-selector" role="group" aria-label="选择公司经历">
-        {workHistory.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === index} onClick={() => setSelected(index)}><span>{item.company}</span><small>{item.dates}</small></button>)}
+        {workHistory.map((item, index) => <button type="button" key={item.id} data-analytics-company={item.id} aria-pressed={selected === index} onClick={() => setSelected(index)}><span>{item.company}</span><small>{item.dates}</small></button>)}
       </div>
       <AgentTrace key={job.id} data={traces[selected]} experience detailsOnly details={<WorkDetails job={job}/>}/>
       </div>

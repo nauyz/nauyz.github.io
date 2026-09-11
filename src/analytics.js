@@ -1,3 +1,4 @@
+import { startEngagement } from './engagement';
 // Analytics never blocks navigation, video controls, or rendering.
 export function initAnalytics({ websiteId, scriptUrl, domains = ['nauyz.github.io'] }) {
   const query = new URLSearchParams(location.search);
@@ -12,6 +13,7 @@ export function initAnalytics({ websiteId, scriptUrl, domains = ['nauyz.github.i
   const pending = [];
   let ready = false;
   let stopped = false;
+  let stopEngagement;
   function track(name, data) {
     if (stopped) return;
     if (!ready) { if (pending.length < 30) pending.push([name, data]); return; }
@@ -53,10 +55,12 @@ export function initAnalytics({ websiteId, scriptUrl, domains = ['nauyz.github.i
       await window.umami.track();
       ready = true;
       pending.splice(0).forEach(([name, data]) => track(name, data));
+      stopEngagement = startEngagement(track);
     } catch { stop(); }
   };
   function stop() {
     stopped = true;
+    stopEngagement?.();
     pending.length = 0;
     document.removeEventListener('click', onClick, true);
     document.removeEventListener('playing', onPlaying, true);

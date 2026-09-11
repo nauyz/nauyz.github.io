@@ -63,7 +63,7 @@ function ProjectGrid({ onOpen }) {
   const reduce = useReducedMotion();
   return <section id="projects" className="project-section">
 
-    <div className="project-grid">{otherProjects.map((project, index) => <motion.article className="project-card" key={project.id} initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.1 }}>
+    <div className="project-grid">{otherProjects.map((project, index) => <motion.article data-analytics-section={project.id} className="project-card" key={project.id} initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.1 }}>
       <header className="project-name-bar"><h2 className="project-name">{project.name}</h2>{project.url && <a data-analytics-event="project_visit" data-analytics-project={project.id} className="text-button project-visit-button" href={project.url} target="_blank" rel="noopener noreferrer">打开网站<Icon as={ArrowUpRight}/></a>}</header>
       {project.presentation === 'phone'
         ? <NavalShowcase project={project}/>
