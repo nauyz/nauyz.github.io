@@ -35,6 +35,7 @@ export function initAnalytics({ websiteId, scriptUrl, domains = ['nauyz.github.i
   };
   document.addEventListener('click', onClick, true);
   document.addEventListener('playing', onPlaying, true);
+  stopEngagement = startEngagement(track);
   const script = document.createElement('script');
   script.id = 'portfolio-analytics';
   script.src = scriptUrl;
@@ -55,7 +56,6 @@ export function initAnalytics({ websiteId, scriptUrl, domains = ['nauyz.github.i
       await window.umami.track();
       ready = true;
       pending.splice(0).forEach(([name, data]) => track(name, data));
-      stopEngagement = startEngagement(track);
     } catch { stop(); }
   };
   function stop() {
